@@ -160,3 +160,15 @@ walmart-rl-ecommerce/
 ├── docker-compose.yml           # All services
 ├── .env.example                 # Environment template
 └── README.md                    # Main project README
+
+
+# Feature branches for each team
+git checkout recommender
+git checkout ar
+git checkout chatbot
+
+# Merge strategy
+git checkout main
+
+git pull origin main  # sync with latest changes from team
+git merge recommender
