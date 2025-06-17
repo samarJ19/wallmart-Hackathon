@@ -1,0 +1,177 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"  // or mysql
+  url      = env("DATABASE_URL")
+}
+
+// User Management (Clerk Integration)
+model User {
+  id            String   @id @default(cuid())
+  clerkId       String   @unique  // Clerk User ID
+  email         String   @unique
+  name          String
+  avatar        String?
+  preferences   Json?    // User preferences for ML
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  cartItems     CartItem[]
+  orders        Order[]
+  interactions  UserInteraction[]
+  chatSessions  ChatSession[]
+  arSessions    ARSession[]
+  
+  @@map("users")
+}
+
+// Product Management
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  category    String
+  brand       String
+  imageUrl    String
+  images      String[] // Multiple product images
+  features    Json     // ML features
+  inventory   Int      @default(0)
+  isActive    Boolean  @default(true)
+  
+  // AR specific fields
+  has3DModel  Boolean  @default(false)
+  modelUrl    String?  // 3D model URL
+  arEnabled   Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  interactions  UserInteraction[]
+  arSessions    ARSession[]
+  
+  @@map("products")
+}
+
+// Cart Management
+model CartItem {
+  id        String @id @default(cuid())
+  userId    String
+  productId String
+  quantity  Int    @default(1)
+  createdAt DateTime @default(now())
+  
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, productId])
+  @@map("cart_items")
+}
+
+// Order Management
+model Order {
+  id          String    @id @default(cuid())
+  userId      String
+  status      String    // 'pending', 'confirmed', 'shipped', 'delivered'
+  total       Float
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  user        User        @relation(fields: [userId], references: [id])
+  orderItems  OrderItem[]
+  
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float  // Price at time of order
+  
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+  
+  @@map("order_items")
+}
+
+// ML & Recommendations
+model UserInteraction {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  action    String   // 'view', 'tick', 'cross', 'cart_add', 'purchase', 'ar_view'
+  reward    Float    // Reward value for RL
+  context   Json?    // Additional context (page, time spent, etc.)
+  createdAt DateTime @default(now())
+  
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+  
+  @@map("user_interactions")
+}
+
+// Chatbot Management
+model ChatSession {
+  id        String   @id @default(cuid())
+  userId    String
+  sessionId String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user      User         @relation(fields: [userId], references: [id])
+  messages  ChatMessage[]
+  
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id          String   @id @default(cuid())
+  sessionId   String
+  message     String
+  sender      String   // 'user' or 'bot'
+  intent      String?  // Detected intent
+  confidence  Float?   // Confidence score
+  metadata    Json?    // Additional metadata
+  createdAt   DateTime @default(now())
+  
+  session     ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  @@map("chat_messages")
+}
+
+// AR Management
+model ARSession {
+  id          String   @id @default(cuid())
+  userId      String
+  productId   String
+  sessionId   String   @unique
+  duration    Int?     // Session duration in seconds
+  interactions Json?   // AR interaction data
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User    @relation(fields: [userId], references: [id])
+  product     Product @relation(fields: [productId], references: [id])
+  
+  @@map("ar_sessions")
+}
+
+// Analytics & Metrics
+model Analytics {
+  id        String   @id @default(cuid())
+  type      String   // 'ml_performance', 'chat_metrics', 'ar_usage'
+  data      Json     // Metrics data
+  createdAt DateTime @default(now())
+  
+  @@map("analytics")
+}
