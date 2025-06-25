@@ -1,3 +1,4 @@
+import { useAuth } from '@clerk/clerk-react';
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { io, Socket } from 'socket.io-client';
 
@@ -38,18 +39,13 @@ interface WebSocketProviderProps {
 
 // Provider component
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ 
-  children, 
-  userId 
+  children
 }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-
+  const { userId } = useAuth()
   useEffect(() => {
-    if (!userId) {
-      // Don't connect if no user is logged in
-      return;
-    }
-
+    
     // Create connection
     const serverUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
     const newSocket = io(serverUrl, {

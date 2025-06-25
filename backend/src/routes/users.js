@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/profile', requireAuth(), async (req, res) => {
   try {
     const { prisma } = req;
-    const userId = getAuth(req);
+    const { userId } = getAuth(req);
 
     // Get user from database
     let user = await prisma.user.findUnique({
@@ -64,7 +64,7 @@ router.get('/profile', requireAuth(), async (req, res) => {
 router.post('/sync', requireAuth(), async (req, res) => {
   try {
     const { prisma } = req;
-    const userId = getAuth(req);
+    const { userId } = getAuth(req);
 
     // Get user details from Clerk
     const clerkUser = await clerkClient.users.getUser(userId);
@@ -108,7 +108,7 @@ router.post('/sync', requireAuth(), async (req, res) => {
 router.post('/interactions', requireAuth(), async (req, res) => {
   try {
     const { prisma, io } = req;
-    const userId = getAuth(req);
+    const { userId } = getAuth(req);
     const { productId, action, context } = req.body;
 
     if (!productId || !action) {
@@ -173,7 +173,7 @@ router.post('/interactions', requireAuth(), async (req, res) => {
 router.put('/preferences', requireAuth(), async (req, res) => {
   try {
     const { prisma } = req;
-    const userId = getAuth(req);
+    const { userId } = getAuth(req);
     const { preferences } = req.body;
 
     // Get user's database ID
@@ -211,7 +211,7 @@ router.put('/preferences', requireAuth(), async (req, res) => {
 router.get('/interactions', requireAuth(), async (req, res) => {
   try {
     const { prisma } = req;
-    const userId = getAuth(req);
+    const { userId } = getAuth(req);
     const { limit = 50, offset = 0 } = req.query;
 
     // Get user's database ID

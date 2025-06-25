@@ -1,4 +1,4 @@
-## Building an **e-commerce website** for the **Walmart Hackathon**: 
+## Building an **e-commerce website** for the **Walmart **Hackathon** **: 
 ### Tech Stack
 - **Backend:**
      **Node.js with Express** 

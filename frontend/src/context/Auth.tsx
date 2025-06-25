@@ -68,7 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     syncUserData();
-  }, [isSignedIn, userId, clerkUser, isLoaded, authAPI]);
+  }, []);
 
   const refreshUserProfile = async () => {
     if (!isSignedIn || !userId) return;
