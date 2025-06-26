@@ -7,7 +7,6 @@
     - **React** for UI.
 - **Other Tools & Libraries:**
     - **Prisma** as ORM.
-    - **socket io** for WebSockets.
     - **Clerk** for user session management and authentication.
 ### Folder structure
 backend
@@ -160,7 +159,10 @@ model UserInteraction {
 
 ## Current Flow :
 
-Frontend → User interacts with product → Socket.IO → Node.js Backend
-Node.js Backend → Stores interaction in database (UserInteraction table)
-Frontend → Makes API call to FastAPI → Gets recommendations from bandit.py
-FastAPI → Queries database for interaction data → Updates bandit → Returns recommendation
+
+🧠 Learning Loop
+
+Recommend products to user
+Observe user feedback (like/dislike/purchase)
+Update product scores based on feedback
+Improve future recommendations

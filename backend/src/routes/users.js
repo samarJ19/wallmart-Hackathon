@@ -107,7 +107,7 @@ router.post('/sync', requireAuth(), async (req, res) => {
 // POST /api/users/interactions - Track user interactions for ML
 router.post('/interactions', requireAuth(), async (req, res) => {
   try {
-    const { prisma, io } = req;
+    const { prisma } = req;
     const { userId } = getAuth(req);
     const { productId, action, context } = req.body;
 
@@ -136,16 +136,6 @@ router.post('/interactions', requireAuth(), async (req, res) => {
         reward,
         context: context || {}
       }
-    });
-
-    // Emit real-time update for ML service
-    io.emit('user-interaction', {
-      userId: user.id,
-      productId,
-      action,
-      reward,
-      context,
-      timestamp: interaction.createdAt
     });
 
     // Update user preferences if it's a significant action

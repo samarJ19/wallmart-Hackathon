@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { useAuthenticatedAPI, type CartItem, type Product } from '../services/api';
-import { useWebSocket } from './Socket';
 
 // Simple cart state - no complex reducer needed
 interface CartState {
@@ -36,7 +35,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   
   const { userId, isSignedIn } = useAuth();
   const api = useAuthenticatedAPI();
-  const { sendCartUpdate, trackAddToCart } = useWebSocket();
 
   // Load cart when user signs in
   useEffect(() => {
@@ -85,13 +83,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       // Reload cart to get updated data
       await loadCart();
 
-      // Track interaction and send cart update
-      trackAddToCart(product.id, quantity);
-      sendCartUpdate({
-        userId,
-        cartCount: getTotalItems() + quantity,
-      });
-
     } catch (err) {
       console.error('Failed to add to cart:', err);
       setError('Failed to add item to cart');
@@ -113,11 +104,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       await api.put(`/api/cart/${productId}`, { quantity });
       await loadCart();
 
-      sendCartUpdate({
-        userId,
-        cartCount: getTotalItems(),
-      });
-
     } catch (err) {
       console.error('Failed to update quantity:', err);
       setError('Failed to update item');
@@ -134,11 +120,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       await api.delete(`/api/cart/${productId}`);
       await loadCart();
 
-      sendCartUpdate({
-        userId,
-        cartCount: getTotalItems(),
-      });
-
     } catch (err) {
       console.error('Failed to remove from cart:', err);
       setError('Failed to remove item');
@@ -154,11 +135,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     try {
       await api.delete('/api/cart');
       setItems([]);
-
-      sendCartUpdate({
-        userId,
-        cartCount: 0,
-      });
 
     } catch (err) {
       console.error('Failed to clear cart:', err);

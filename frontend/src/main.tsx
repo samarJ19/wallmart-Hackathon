@@ -4,10 +4,8 @@ import "./index.css";
 import App from "./App.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
-import AuthProvider from "./context/Auth.tsx";
-
 import { CartProvider } from "./context/Cart.tsx";
-import { WebSocketProvider } from "./context/Socket.tsx";
+
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {
@@ -16,16 +14,12 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById("root")!).render(
   <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-    <AuthProvider>
-      <WebSocketProvider>
-        <CartProvider>
-          <StrictMode>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </StrictMode>
-        </CartProvider>
-      </WebSocketProvider>
-    </AuthProvider>
+    <CartProvider>
+      <StrictMode>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </StrictMode>
+    </CartProvider>
   </ClerkProvider>
 );

@@ -171,6 +171,8 @@ router.get("/", getUser, async (req, res) => {
   }
 });
 
+//GET route to get product details given a batch of product Ids
+
 // GET /api/products/:id - Get single product with detailed info
 router.get("/:id", getUser, async (req, res) => {
   try {
@@ -364,7 +366,7 @@ router.get("/brands/list", async (req, res) => {
 // POST /api/products/:id/view - Track product view (for ML)
 router.post("/:id/view", getUser, async (req, res) => {
   try {
-    const { prisma, io } = req;
+    const { prisma } = req;
     const { id } = req.params;
     const { context } = req.body;
 
@@ -392,16 +394,6 @@ router.post("/:id/view", getUser, async (req, res) => {
             reward: 0.1,
             context: context || {},
           },
-        });
-
-        // Emit real-time update for ML service
-        io.emit("user-interaction", {
-          userId: user.id,
-          productId: id,
-          action: "view",
-          reward: 0.1,
-          context,
-          timestamp: interaction.createdAt,
         });
       }
     }
