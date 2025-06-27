@@ -1,25 +1,70 @@
-import { useAuth } from "@clerk/clerk-react";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useAuthenticatedAPI } from "@/services/api";
+import { useCallback, useEffect, useState } from "react";
 
 export const useRecommendation = () => {
-  const [productIds, setProductIds] = useState([]);
-  const { userId } = useAuth();
-  useEffect(() => {
-    async function getRecommendation() {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/recommend/${userId}`
-        );
-        setProductIds(response.data);
-      } catch (err) {
-        console.error(
-          "Got error while getting recommendation from recommendation system: " +
-            err
-        );
-      }
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const authAPI = useAuthenticatedAPI();
+
+  // Helper function to extract products from response
+  const extractProducts = (responseData: any) => {
+    console.log("📦 Raw API response:", responseData);
+    
+    // Handle different possible response structures
+    if (Array.isArray(responseData)) {
+      return responseData;
     }
-    getRecommendation();
-  }, []);
-  return productIds;
+    
+    if (responseData && Array.isArray(responseData.products)) {
+      return responseData.products;
+    }
+    
+    if (responseData && Array.isArray(responseData.data)) {
+      return responseData.data;
+    }
+    
+    console.warn("⚠️ Unexpected response structure:", responseData);
+    return [];
+  };
+
+  // Unified fetch function - removed from useCallback to avoid dependency issues
+  const fetchRecommendations = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      console.log("🔄 Fetching recommendations...");
+      
+      const response = await authAPI.get("api/recommendations/getRec");
+      const extractedProducts = extractProducts(response.data);
+      
+      console.log("✅ Recommendations fetched:", extractedProducts.length, "products");
+      setProducts(extractedProducts);
+    } catch (err) {
+      console.error("❌ Error fetching recommendations:", err);
+      setError("Failed to load recommendations");
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial load - empty dependency array to only run once
+  useEffect(() => {
+    fetchRecommendations();
+  }, []); // Empty dependency array for initial load only
+
+  // Refresh function - use current authAPI without dependencies
+  const refresh = useCallback(async () => {
+    console.log("🔄 Manual refresh triggered");
+    await fetchRecommendations();
+  }, []); // Empty dependency array
+
+  // Return products array, loading state, error, and refresh function
+  return {
+    products,
+    loading,
+    error,
+    refresh,
+  };
 };

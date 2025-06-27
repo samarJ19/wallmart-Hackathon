@@ -3,35 +3,54 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Check, X, Star } from "lucide-react";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-  rating: number;
-  image: string;
-  description: string;
-}
-
+import {type Product } from "@/types";
+import { useAuthenticatedAPI } from "@/services/api";
 interface ProductCardProps {
   product: Product;
   onAddToCart?: (product: Product) => void;
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-
-  const handleAddToCart = () => {
+  const authApi = useAuthenticatedAPI();
+  //call user interaction with action for all these handlers with action :add to cart, like and dislike
+  const handleAddToCart = async () => {
+      try{
+        const response = await authApi.post('/interactions',{
+        productId:product.id,
+        action:'cart_add',
+        context:""
+      });
+    }catch(err){
+      console.log("Error while adding to cart")
+    }
     console.log("Add to cart clicked for:", product.name);
-    onAddToCart?.(product);
   };
 
-  const handleTickClick = () => {
+  const handleTickClick = async () => {
+    try{
+        const response = await authApi.post('/interactions',{
+        productId:product.id,
+        action:'tick',
+        context:""
+      });
+    }catch(err){
+      console.log("Error while sending positive interaction")
+    }
+    
     console.log("Tick (like/favorite) clicked for:", product.name);
   };
 
-  const handleCrossClick = () => {
+  const handleCrossClick = async () => {
+    try{
+        const response = await authApi.post('/interactions',{
+        productId:product.id,
+        action:'cross ',
+        context:""
+      });
+    }catch(err){
+      console.log("Error while adding to cart")
+    }
     console.log("Cross (remove/dislike) clicked for:", product.name);
   };
 
@@ -43,7 +62,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
     >
       <div className="relative overflow-hidden">
         <img
-          src={product.image}
+          src={product.imageUrl}
           alt={product.name}
           className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -97,7 +116,6 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm text-gray-600">{product.rating}</span>
           </div>
         </div>
         

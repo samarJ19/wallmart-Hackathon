@@ -1,46 +1,8 @@
-Change bandit.py according to users route and database schema
+useRecommendation, the useEffect in this need to run whever user clicks on a button referesh or something like that.Also initially products is not an array so we have to put some type of checks before rendering the actaul functions.Like until we get the data we should not get functionality involving array features
+->files involves: useRecommendation.ts and Foryou.tsx
 
-  The bandit recommendation system needs to query the database (which it can by hitting the backend on the route // GET /api/users/interactions - Get user interaction history. This route share user interaction which have all kind of details about product so after computing the best recommendation , we can directly give a list of actual products not just productIds eliminating the need for INTEGRATION WITH PRODUCT CATALOG) and I think the version that I have  does not account for that, also I think it has few other bugs like select_arm function .  Also Implement product scoring system - Add methods: select_products(), update_rewards() - Store arm (product) statistics in memory
+Restructure home.tsx, include a side bar which will have two buttons redirecting the user to cart page and Foryou page, both these pages have been completed so you don't need to give code for them just focus on the given file and implement pagination and shimmer based loading skeletons.
 
-The get route: router.get('/interactions', requireAuth(), async (req, res) => {
-  try {
-    const { prisma } = req;
-    const { userId } = getAuth(req);
-    const { limit = 50, offset = 0 } = req.query;
+=>The product data should include features these features include products popularity , its category and other relevant features that can be used to recommend it to someone how has joined your platform for the first time ! Although we can start with these features but these features need to change periodically
 
-    // Get user's database ID
-    const user = await prisma.user.findUnique({
-      where: { clerkId: userId }
-    });
 
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const interactions = await prisma.userInteraction.findMany({
-      where: { userId: user.id },
-      include: {
-        product: {
-          select: {
-            id: true,
-            name: true,
-            imageUrl: true,
-            price: true,
-            category: true
-          }
-        }
-      },
-      orderBy: { createdAt: 'desc' },
-      take: parseInt(limit),
-      skip: parseInt(offset)
-    });
-
-    res.json({ interactions });
-
-  } catch (error) {
-    console.error('Error fetching interactions:', error);
-    res.status(500).json({ error: 'Failed to fetch interactions' });
-  }
-});
-
-and change the main.py according to the changes in the bandit.py

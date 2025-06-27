@@ -9,6 +9,7 @@ import Profile from './pages/Profile'
 import SignInPage from './pages/auth/SignInPage'
 import SignUpPage from './pages/auth/SignUpPage'
 import { Toaster } from '@/components/ui/sonner'
+import Foryou from './components/Foryou'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/products/:id" element={<ProductDetail />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/foryou" element={<Foryou />} />
                   </Routes>
                 </Layout>
               </SignedIn>

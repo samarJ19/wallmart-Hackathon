@@ -10,6 +10,16 @@ const getUser = (req, next) => {
   next();
 };
 
+router.get("/genproducts", async (req,res)=>{
+  try{
+    const { prisma } = req;
+    const products = await prisma.product.findMany();
+    res.json({Message:"Data fetch complete !",products:products});
+  }catch(err){
+    res.status(403).json({errorMessage:"Got error while getting products from database",err})
+  }
+})
+
 // GET /api/products - Get all products with filtering and pagination
 router.get("/", getUser, async (req, res) => {
   try {
@@ -298,26 +308,39 @@ router.get("/categories/list", async (req, res) => {
   try {
     const { prisma } = req;
 
-    // First, get all active products grouped by category
+    // Get all active products with full details grouped by category
     const products = await prisma.product.findMany({
       where: { isActive: true },
       select: {
         id: true,
+        name: true,
+        description: true,
+        price: true,
+        imageUrl: true,
         category: true,
+        features: true,
+        createdAt: true
+        // Add any other product fields you need
+      },
+      orderBy: {
+        createdAt: 'desc', // Order products by creation date
       },
     });
 
-    // Group them manually to get product_ids for each category
+    // Group products by category
     const categoryMap = products.reduce((acc, product) => {
-      if (!acc[product.category]) {
-        acc[product.category] = {
-          name: product.category,
-          product_ids: [],
+      const categoryName = product.category;
+      
+      if (!acc[categoryName]) {
+        acc[categoryName] = {
+          name: categoryName,
+          products: [],
           count: 0,
         };
       }
-      acc[product.category].product_ids.push(product.id);
-      acc[product.category].count++;
+      
+      acc[categoryName].products.push(product);
+      acc[categoryName].count++;
       return acc;
     }, {});
 
@@ -326,10 +349,14 @@ router.get("/categories/list", async (req, res) => {
       (a, b) => b.count - a.count
     );
 
-    res.json({ categories: categoryList });
+    res.json({ 
+      categories: categoryList,
+      totalCategories: categoryList.length,
+      totalProducts: products.length
+    });
   } catch (error) {
-    console.error("Error fetching categories:", error);
-    res.status(500).json({ error: "Failed to fetch categories" });
+    console.error("Error fetching categories with products:", error);
+    res.status(500).json({ error: "Failed to fetch categories with products" });
   }
 });
 

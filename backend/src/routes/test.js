@@ -269,7 +269,48 @@ router.get('/setup-validation', async (req, res) => {
   }
 });
 
-// GET /api/test/seed-sample-data - Create sample data for testing
+// creating sample data for products
+router.post('/seed-productData', async (req,res)=>{
+  try {
+    const { prisma } = req;
+    const { productData } = req.body;
+    
+    // Fix 2: Validate that productData exists and is an array
+    if (!productData || !Array.isArray(productData)) {
+      return res.status(400).json({
+        error: "productData is required and must be an array"
+      });
+    }
+    
+    if (productData.length === 0) {
+      return res.status(400).json({
+        error: "productData array cannot be empty"
+      });
+    }
+    // Fix 3: Correct the createMany syntax - pass an object with 'data' property
+    const response = await prisma.product.createMany({
+      data: productData,
+      skipDuplicates: true // Optional: skip duplicates instead of throwing error
+    });
+    
+    res.status(201).json({
+      message: "Seeded data successfully!",
+      count: response.count,
+      response
+    });
+
+  } catch (err) {
+    console.log("Got the following error while seeding product data:", err);
+    
+    // Fix 4: Return proper error status and don't expose internal error details
+    res.status(500).json({
+      error: "Failed to seed product data",
+      message: err.message || "Internal server error"
+    });
+  }
+});
+
+// POST /api/test/seed-sample-data - Create sample data for testing
 router.post('/seed-sample-data', async (req, res) => {
   try {
     const { prisma } = req;

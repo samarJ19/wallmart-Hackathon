@@ -127,7 +127,7 @@ router.post('/interactions', requireAuth(), async (req, res) => {
     // Calculate reward based on action
     const reward = getRewardForAction(action);
 
-    // Store interaction upsert a better option ?
+    // Store interaction
     const interaction = await prisma.userInteraction.create({
       data: {
         userId: user.id,
@@ -197,6 +197,49 @@ router.put('/preferences', requireAuth(), async (req, res) => {
   }
 });
 
+router.get('/interactions/:userId', async (req, res) => {
+  try {
+    const { prisma } = req;
+    const userId = req.params.userId;
+    const { limit = 50, offset = 0 } = req.query;
+
+    // Get user's database ID
+    const user = await prisma.user.findUnique({
+      where: { clerkId: userId }
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const interactions = await prisma.userInteraction.findMany({
+      where: { userId: user.id },
+      include: {
+        product: {
+          select: {
+            id: true,
+            name: true,
+            imageUrl: true,
+            price: true,
+            category: true,
+            description:true,
+            brand:true
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: parseInt(limit),
+      skip: parseInt(offset)
+    });
+
+    res.json({ interactions });
+
+  } catch (error) {
+    console.error('Error fetching interactions:', error);
+    res.status(500).json({ error: 'Failed to fetch interactions' });
+  }
+});
+
 // GET /api/users/interactions - Get user interaction history
 router.get('/interactions', requireAuth(), async (req, res) => {
   try {
@@ -222,7 +265,9 @@ router.get('/interactions', requireAuth(), async (req, res) => {
             name: true,
             imageUrl: true,
             price: true,
-            category: true
+            category: true,
+            description:true,
+            brand:true
           }
         }
       },
