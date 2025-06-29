@@ -9,7 +9,7 @@ require('dotenv').config();
 const productsRouter = require('./routes/products');
 const usersRouter = require('./routes/users');
 const recommendationsRouter = require('./routes/recommendations');
-// const cartRouter = require('./routes/cart');
+const cartRouter = require('./routes/cart');
 // const ordersRouter = require('./routes/orders');
 
 // Initialize Express app
@@ -48,7 +48,7 @@ app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/test',require('./routes/test'));
 app.use('/api/recommendations', recommendationsRouter);
-// app.use('/api/cart', cartRouter);
+app.use('/api/cart', cartRouter);
 // app.use('/api/orders', ordersRouter);
 
 // Health check endpoint

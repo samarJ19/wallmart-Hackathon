@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getAuth } = require("@clerk/express");
+const { getAuth, requireAuth } = require("@clerk/express");
 // Middleware to get user ID (allows both authenticated and unauthenticated requests)
 const getUser = (req, next) => {
   // If user is authenticated via Clerk middleware, userId will be available
@@ -21,8 +21,9 @@ router.get("/genproducts", async (req,res)=>{
 })
 
 // GET /api/products - Get all products with filtering and pagination
-router.get("/", getUser, async (req, res) => {
+router.get("/", requireAuth(), async (req, res) => {
   try {
+    const { userId } = getAuth(req);
     const { prisma } = req;
     const {
       page = 1,
@@ -100,9 +101,9 @@ router.get("/", getUser, async (req, res) => {
 
     // If user is authenticated, get their interaction history for these products, but doesn't it reduces the scope of new products ? if authenticated users are going to see less number of product then how is it going to increase sales or personalization
     let userInteractions = {};
-    if (req.userId) {
+    if (userId) {
       const user = await prisma.user.findUnique({
-        where: { clerkId: req.userId },
+        where: { clerkId: userId },
       });
 
       if (user) {
@@ -184,10 +185,11 @@ router.get("/", getUser, async (req, res) => {
 //GET route to get product details given a batch of product Ids
 
 // GET /api/products/:id - Get single product with detailed info
-router.get("/:id", getUser, async (req, res) => {
+router.get("/:id", requireAuth(), async (req, res) => {
   try {
     const { prisma } = req;
     const { id } = req.params;
+    const { userId } = getAuth(req);
 
     const product = await prisma.product.findUnique({
       where: { id },
@@ -220,9 +222,9 @@ router.get("/:id", getUser, async (req, res) => {
 
     // If user is authenticated, get their specific interactions with this product
     let userInteractions = [];
-    if (req.userId) {
+    if (userId) {
       const user = await prisma.user.findUnique({
-        where: { clerkId: req.userId },
+        where: { clerkId: userId },
       });
 
       if (user) {
