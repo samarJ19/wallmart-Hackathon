@@ -1,0 +1,2608 @@
+[
+  {
+    "id": "prod_e41d4112",
+    "name": "H&M Home 0",
+    "description": "Order perform garden believe money prove example not then strategy first treatment cost.",
+    "price": 1995.74,
+    "category": "home",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Cotton",
+      "color": "Black",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 68,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_d1749521",
+    "name": "H&M Electronics 1",
+    "description": "Member again attention condition question modern million research beat media major.",
+    "price": 1412.71,
+    "category": "electronics",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Mesh",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 96,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_408e5b48",
+    "name": "Adidas Home 2",
+    "description": "Newspaper street the age forward item nearly population final guess list at design.",
+    "price": 2325.76,
+    "category": "home",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Cotton",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 47,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_6e59810d",
+    "name": "Adidas Electronics 3",
+    "description": "Stop remember effort a science present building control case benefit.",
+    "price": 1761.03,
+    "category": "electronics",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 36,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_555465c8",
+    "name": "Adidas Footwear 4",
+    "description": "Put list professor security list travel vote vote movement during senior.",
+    "price": 2166.94,
+    "category": "footwear",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Leather",
+      "color": "Green",
+      "fit": "Loose",
+      "gender": "Male",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 97,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_158e4ace",
+    "name": "H&M Footwear 5",
+    "description": "Down weight professional meeting face than network alone rather political condition American.",
+    "price": 1038.84,
+    "category": "footwear",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 71,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_fd063051",
+    "name": "Puma Home 6",
+    "description": "Enough attorney now clearly building new card push win never issue baby.",
+    "price": 1469.36,
+    "category": "home",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Denim",
+      "color": "Green",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 27,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_954dbd71",
+    "name": "Gucci Footwear 7",
+    "description": "Crime effort concern program yourself speak professional hospital hospital smile tough.",
+    "price": 2967.45,
+    "category": "footwear",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Polyester",
+      "color": "Green",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 46,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_f28bcb11",
+    "name": "Adidas Accessories 8",
+    "description": "Foreign base call Republican safe school one responsibility successful sense big purpose.",
+    "price": 1585.09,
+    "category": "accessories",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Leather",
+      "color": "Blue",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 41,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_862a4c97",
+    "name": "Adidas Footwear 9",
+    "description": "Kitchen effort resource create land my.",
+    "price": 1958.94,
+    "category": "footwear",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "Black",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 94,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_958d20ac",
+    "name": "H&M Electronics 10",
+    "description": "Respond might on break book tree fight account become prove enter.",
+    "price": 1830.3,
+    "category": "electronics",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Adult",
+      "occasion": "Formal"
+    },
+    "inventory": 16,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_e8c229e9",
+    "name": "Gucci Electronics 11",
+    "description": "Explain film learn sell notice responsibility simple position pull sea responsibility show.",
+    "price": 2719.25,
+    "category": "electronics",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 28,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_ccccb793",
+    "name": "H&M Accessories 12",
+    "description": "Win maybe Congress gas author about feel too oil enter theory pressure yeah.",
+    "price": 2292.62,
+    "category": "accessories",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Leather",
+      "color": "Blue",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 30,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_0bc689de",
+    "name": "Puma Accessories 13",
+    "description": "Why worker foreign south guy we.",
+    "price": 1317.89,
+    "category": "accessories",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Green",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 50,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_b81f33b7",
+    "name": "Nike Accessories 14",
+    "description": "Million attention its write leave stuff simple whether trade.",
+    "price": 2828.22,
+    "category": "accessories",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Polyester",
+      "color": "Red",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 86,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_31128967",
+    "name": "Adidas Footwear 15",
+    "description": "Ten mean sometimes first scientist audience.",
+    "price": 1880.63,
+    "category": "footwear",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Leather",
+      "color": "Blue",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 83,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_00a47acc",
+    "name": "Puma Accessories 16",
+    "description": "Tell despite too attention usually manage easy provide population.",
+    "price": 1606.78,
+    "category": "accessories",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 10,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_81aaef9d",
+    "name": "Zara Accessories 17",
+    "description": "Term Democrat woman write firm structure.",
+    "price": 2005.25,
+    "category": "accessories",
+    "brand": "Zara",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Cotton",
+      "color": "Green",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 90,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_9870ef83",
+    "name": "Nike Footwear 18",
+    "description": "Total camera future others cup economy.",
+    "price": 1829.6,
+    "category": "footwear",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "White",
+      "fit": "Loose",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 68,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_2a05fcab",
+    "name": "Zara Footwear 19",
+    "description": "Himself organization soon oil adult trouble sign much.",
+    "price": 2096.05,
+    "category": "footwear",
+    "brand": "Zara",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "White",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 22,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_93151c67",
+    "name": "Puma Electronics 20",
+    "description": "Cover lay alone resource project you.",
+    "price": 1389.84,
+    "category": "electronics",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Denim",
+      "color": "White",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 88,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_1b771662",
+    "name": "H&M Accessories 21",
+    "description": "Interview past wear poor term technology face.",
+    "price": 1198.53,
+    "category": "accessories",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Cotton",
+      "color": "Red",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 93,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_d6dc3602",
+    "name": "Gucci Accessories 22",
+    "description": "Hope use one property church throw force around spend.",
+    "price": 1419.67,
+    "category": "accessories",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Leather",
+      "color": "Blue",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 90,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_32186b3d",
+    "name": "Puma Electronics 23",
+    "description": "Number research after give scientist well.",
+    "price": 1250.35,
+    "category": "electronics",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Denim",
+      "color": "White",
+      "fit": "Loose",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 23,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_9fd69de8",
+    "name": "Zara Accessories 24",
+    "description": "American most two surface analysis join behind senior defense reach.",
+    "price": 1120.93,
+    "category": "accessories",
+    "brand": "Zara",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Denim",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 45,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_7c2478fd",
+    "name": "Puma Footwear 25",
+    "description": "Throw defense north effort economic away finally color represent often.",
+    "price": 2887.93,
+    "category": "footwear",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Denim",
+      "color": "White",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 99,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_46ad3636",
+    "name": "Gucci Footwear 26",
+    "description": "Program visit good with unit surface hundred fish.",
+    "price": 2512.74,
+    "category": "footwear",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "Red",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 55,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_50f040e2",
+    "name": "Zara Electronics 27",
+    "description": "Staff manager control hit building year.",
+    "price": 1687.87,
+    "category": "electronics",
+    "brand": "Zara",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Mesh",
+      "color": "Green",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 48,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_ca16d68a",
+    "name": "Gucci Electronics 28",
+    "description": "Field former water price direction write necessary thought himself chair century black natural.",
+    "price": 2529.76,
+    "category": "electronics",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Mesh",
+      "color": "Blue",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 44,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_8693bf4a",
+    "name": "Adidas Footwear 29",
+    "description": "Range realize scene school choose computer next physical crime throughout carry its particularly.",
+    "price": 1640.85,
+    "category": "footwear",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Cotton",
+      "color": "Green",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 85,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_faa91358",
+    "name": "H&M Electronics 30",
+    "description": "Whole far know approach reality successful letter mention executive information report risk.",
+    "price": 2233.94,
+    "category": "electronics",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Cotton",
+      "color": "Black",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 54,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_d48178d8",
+    "name": "Puma Accessories 31",
+    "description": "Recognize until fill system hold happen rule deal program into system accept nature.",
+    "price": 1182.99,
+    "category": "accessories",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Black",
+      "fit": "Loose",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 29,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_34c19dc6",
+    "name": "Adidas Electronics 32",
+    "description": "Training glass scene itself network amount.",
+    "price": 1643.06,
+    "category": "electronics",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Leather",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 97,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_50cafb36",
+    "name": "H&M Electronics 33",
+    "description": "Red hour similar age young song change stage employee member agree nearly.",
+    "price": 1744.54,
+    "category": "electronics",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Denim",
+      "color": "Red",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 53,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_96ad7e79",
+    "name": "Gucci Home 34",
+    "description": "Rule detail old same education spend western himself which morning skill no catch.",
+    "price": 1015.99,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Cotton",
+      "color": "Red",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 62,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_0f92a604",
+    "name": "Nike Electronics 35",
+    "description": "Different foot piece condition draw interest theory owner.",
+    "price": 1932.42,
+    "category": "electronics",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Mesh",
+      "color": "Black",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 50,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_48259b38",
+    "name": "Zara Footwear 36",
+    "description": "Wind necessary scientist tree place century foot into challenge.",
+    "price": 2636.53,
+    "category": "footwear",
+    "brand": "Zara",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Denim",
+      "color": "Green",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 83,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_1f6c7653",
+    "name": "Gucci Footwear 37",
+    "description": "Policy actually talk let consumer art stop ask Congress ready.",
+    "price": 1147.92,
+    "category": "footwear",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Mesh",
+      "color": "Blue",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Adult",
+      "occasion": "Formal"
+    },
+    "inventory": 63,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_2fb64875",
+    "name": "Nike Home 38",
+    "description": "Way magazine organization data along relate often step.",
+    "price": 2349.51,
+    "category": "home",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Mesh",
+      "color": "Black",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 16,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_a322f20e",
+    "name": "Nike Electronics 39",
+    "description": "Record beautiful course wide investment detail believe cup blood.",
+    "price": 1155.1,
+    "category": "electronics",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Leather",
+      "color": "Red",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 12,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_53fa87e4",
+    "name": "Puma Electronics 40",
+    "description": "Gun rule quickly far also land approach book door according bed expert.",
+    "price": 1425.81,
+    "category": "electronics",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Polyester",
+      "color": "Green",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 65,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_59ab5e39",
+    "name": "Nike Electronics 41",
+    "description": "Cut quite reason head much simply provide professor.",
+    "price": 1358.58,
+    "category": "electronics",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Denim",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 48,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_ebcb1923",
+    "name": "Zara Footwear 42",
+    "description": "Hear similar strategy will wall may water summer today one newspaper deal.",
+    "price": 1006.56,
+    "category": "footwear",
+    "brand": "Zara",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Cotton",
+      "color": "Black",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 85,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_dbf36cdd",
+    "name": "Nike Footwear 43",
+    "description": "Enjoy each consider likely knowledge career base sea trip rest break bill.",
+    "price": 2570.96,
+    "category": "footwear",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Mesh",
+      "color": "Green",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 35,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_49f7133d",
+    "name": "Adidas Home 44",
+    "description": "Senior mission parent soldier quickly claim difference.",
+    "price": 2566.7,
+    "category": "home",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Polyester",
+      "color": "Red",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 59,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_9ad3b781",
+    "name": "Zara Electronics 45",
+    "description": "Treat off contain voice whatever answer claim against cost.",
+    "price": 2802.56,
+    "category": "electronics",
+    "brand": "Zara",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 82,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_af820514",
+    "name": "Nike Home 46",
+    "description": "Window long service remain form statement article what million at.",
+    "price": 2480.33,
+    "category": "home",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Polyester",
+      "color": "Black",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 25,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_fa4446c3",
+    "name": "Gucci Accessories 47",
+    "description": "Figure executive character support performance style tough machine land.",
+    "price": 2817.92,
+    "category": "accessories",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Denim",
+      "color": "Blue",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 41,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_1d59b96f",
+    "name": "Gucci Home 48",
+    "description": "Ago reflect month pay red day letter attention church.",
+    "price": 1466.5,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Mesh",
+      "color": "White",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 53,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_ce0ffae0",
+    "name": "Nike Accessories 49",
+    "description": "Couple strong test pressure officer discover Democrat inside anyone and.",
+    "price": 2981.3,
+    "category": "accessories",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Denim",
+      "color": "Blue",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 13,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_9a0e717e",
+    "name": "Puma Electronics 50",
+    "description": "Treatment apply doctor herself scientist civil mention safe outside serve face picture foreign.",
+    "price": 1879.17,
+    "category": "electronics",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Polyester",
+      "color": "Blue",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 81,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_245c57eb",
+    "name": "Nike Footwear 51",
+    "description": "Dinner style later American ago base.",
+    "price": 1325.46,
+    "category": "footwear",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 33,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_b9beaca0",
+    "name": "Gucci Footwear 52",
+    "description": "Father risk word without person official table serious church board return be people.",
+    "price": 1587.25,
+    "category": "footwear",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Black",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 29,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_73a5542f",
+    "name": "H&M Accessories 53",
+    "description": "Mean service beautiful without difficult kitchen degree likely.",
+    "price": 1143.66,
+    "category": "accessories",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 32,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_988483f5",
+    "name": "Gucci Home 54",
+    "description": "Article other ready production cover forward boy author bit.",
+    "price": 1027.1,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Polyester",
+      "color": "White",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 44,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_7946314d",
+    "name": "Adidas Home 55",
+    "description": "Worker really scene skin bar eye because occur ten.",
+    "price": 2147.41,
+    "category": "home",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Polyester",
+      "color": "Green",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 21,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_cb6cdb23",
+    "name": "Adidas Footwear 56",
+    "description": "North child try player democratic because.",
+    "price": 1782.03,
+    "category": "footwear",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Mesh",
+      "color": "Black",
+      "fit": "Loose",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Formal"
+    },
+    "inventory": 21,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_8f0dc668",
+    "name": "Adidas Footwear 57",
+    "description": "Film bed order reason last wall measure still choice positive claim popular.",
+    "price": 1175.58,
+    "category": "footwear",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "Red",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 64,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_b912e61f",
+    "name": "Puma Accessories 58",
+    "description": "Tax pull level ground whether health girl rise culture own relate.",
+    "price": 1385.05,
+    "category": "accessories",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Cotton",
+      "color": "Red",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 38,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_d343dcff",
+    "name": "Nike Home 59",
+    "description": "Poor than however once writer including new eat sort letter thank near result.",
+    "price": 1211.34,
+    "category": "home",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Denim",
+      "color": "Red",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 58,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_15aef00e",
+    "name": "H&M Accessories 60",
+    "description": "Campaign just factor father center yet term level approach anyone social bag behavior health.",
+    "price": 1664.65,
+    "category": "accessories",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "White",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Adult",
+      "occasion": "Formal"
+    },
+    "inventory": 64,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_308a16c1",
+    "name": "H&M Footwear 61",
+    "description": "He range American say threat church oil as perhaps me hot yourself perform attention.",
+    "price": 2631.33,
+    "category": "footwear",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Denim",
+      "color": "Black",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 50,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_20e73c27",
+    "name": "Nike Electronics 62",
+    "description": "Letter whether prove stop detail series see player leader poor.",
+    "price": 2756.33,
+    "category": "electronics",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Leather",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 78,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_0e986560",
+    "name": "Puma Accessories 63",
+    "description": "Two story voice final computer simple eye outside again three.",
+    "price": 1922.7,
+    "category": "accessories",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "Blue",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 72,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_cf457a61",
+    "name": "Adidas Footwear 64",
+    "description": "Ever strong prevent always there loss.",
+    "price": 1282.96,
+    "category": "footwear",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Cotton",
+      "color": "Black",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 82,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_b455d90c",
+    "name": "Puma Footwear 65",
+    "description": "Movement action state into difference voice.",
+    "price": 2443.0,
+    "category": "footwear",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Cotton",
+      "color": "Black",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 26,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_cea98b3e",
+    "name": "Puma Electronics 66",
+    "description": "Reduce true day light common to at west develop senior miss.",
+    "price": 2096.67,
+    "category": "electronics",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Polyester",
+      "color": "Black",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 61,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_d5e11552",
+    "name": "H&M Electronics 67",
+    "description": "Level agent sell fly beyond would ten major consumer garden tell remain.",
+    "price": 1231.02,
+    "category": "electronics",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Cotton",
+      "color": "Red",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 15,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_77b16fd3",
+    "name": "Puma Electronics 68",
+    "description": "Institution option cell money country quickly let leader commercial hold recognize.",
+    "price": 2312.63,
+    "category": "electronics",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 51,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_67ef3266",
+    "name": "Gucci Home 69",
+    "description": "Allow network home receive treat early herself note win including official cost.",
+    "price": 2299.47,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 69,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_bb575cf2",
+    "name": "Puma Footwear 70",
+    "description": "Kid office figure car truth its charge model notice grow.",
+    "price": 1660.41,
+    "category": "footwear",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Green",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 48,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_41ec3f83",
+    "name": "H&M Electronics 71",
+    "description": "Summer manage while term character and side successful trial.",
+    "price": 1818.27,
+    "category": "electronics",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 70,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_c17ece75",
+    "name": "Adidas Home 72",
+    "description": "Decade they compare physical language grow open decade well system power fall.",
+    "price": 1257.44,
+    "category": "home",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Denim",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 20,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_eb9a72e6",
+    "name": "Nike Electronics 73",
+    "description": "Grow country court produce carry receive evidence.",
+    "price": 1620.14,
+    "category": "electronics",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Polyester",
+      "color": "White",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 31,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_6166c01d",
+    "name": "Gucci Home 74",
+    "description": "Want agree plant want election employee meet push.",
+    "price": 1114.15,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Polyester",
+      "color": "Green",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 100,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_64592a4a",
+    "name": "Gucci Home 75",
+    "description": "List generation poor force human represent option according nice image entire fine claim.",
+    "price": 2454.42,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Mesh",
+      "color": "Black",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 93,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_009f62ec",
+    "name": "Gucci Home 76",
+    "description": "Visit first ability skill lay someone them remain himself.",
+    "price": 2570.06,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Cotton",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Formal"
+    },
+    "inventory": 75,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_20c0d21b",
+    "name": "Gucci Home 77",
+    "description": "Avoid sport despite trip require tough.",
+    "price": 2332.35,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Leather",
+      "color": "Blue",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 47,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_717d31c3",
+    "name": "Puma Accessories 78",
+    "description": "Myself born there no what investment myself this assume article series wish direction.",
+    "price": 1868.02,
+    "category": "accessories",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 76,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_848a9829",
+    "name": "Puma Footwear 79",
+    "description": "Value him effort find character view it view dark so choice.",
+    "price": 2519.0,
+    "category": "footwear",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Mesh",
+      "color": "Green",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 91,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_b1a20d02",
+    "name": "H&M Footwear 80",
+    "description": "Majority get ago everyone bring or serious take success whom everybody.",
+    "price": 1989.18,
+    "category": "footwear",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Green",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Adult",
+      "occasion": "Party"
+    },
+    "inventory": 36,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_69a530e8",
+    "name": "Adidas Electronics 81",
+    "description": "Argue point always show edge try along modern theory stop network development.",
+    "price": 1381.13,
+    "category": "electronics",
+    "brand": "Adidas",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Denim",
+      "color": "White",
+      "fit": "Regular",
+      "gender": "Unisex",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 66,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_51862081",
+    "name": "Gucci Home 82",
+    "description": "Price around physical two site artist.",
+    "price": 1296.37,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Black",
+      "fit": "Athletic",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 26,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_441a6b25",
+    "name": "Puma Accessories 83",
+    "description": "Himself main rock both all either strategy use order model.",
+    "price": 2711.32,
+    "category": "accessories",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Polyester",
+      "color": "Black",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 42,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_324987c5",
+    "name": "Puma Home 84",
+    "description": "Price course fill beat truth born summer.",
+    "price": 2821.86,
+    "category": "home",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Mesh",
+      "color": "Green",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 44,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_87083d51",
+    "name": "H&M Accessories 85",
+    "description": "Purpose usually reason heavy science away learn why.",
+    "price": 2307.64,
+    "category": "accessories",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Cotton",
+      "color": "Red",
+      "fit": "Loose",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 49,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_804c46c8",
+    "name": "H&M Electronics 86",
+    "description": "Nor letter office sort physical room fire policy receive third free administration figure can.",
+    "price": 1054.62,
+    "category": "electronics",
+    "brand": "H&M",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Denim",
+      "color": "White",
+      "fit": "Loose",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 71,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_268f5259",
+    "name": "Nike Home 87",
+    "description": "Apply contain father almost image tell song week others.",
+    "price": 1515.81,
+    "category": "home",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Denim",
+      "color": "White",
+      "fit": "Loose",
+      "gender": "Unisex",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 81,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_3c0d5374",
+    "name": "Puma Footwear 88",
+    "description": "Mrs heart to information plan age.",
+    "price": 2305.13,
+    "category": "footwear",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Denim",
+      "color": "Black",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Casual"
+    },
+    "inventory": 75,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_4be64b49",
+    "name": "Gucci Accessories 89",
+    "description": "Reason leave drop animal animal especially yourself chance real community film plan property.",
+    "price": 2209.03,
+    "category": "accessories",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Polyester",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 26,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_6236147a",
+    "name": "Puma Home 90",
+    "description": "Bag situation store herself support old stock choose scene tell free.",
+    "price": 1095.33,
+    "category": "home",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Polyester",
+      "color": "Red",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Formal"
+    },
+    "inventory": 44,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_ee11c019",
+    "name": "Gucci Home 91",
+    "description": "Former almost trip drug lead likely TV work safe cell woman few.",
+    "price": 1107.79,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Mesh",
+      "color": "Green",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Kids",
+      "occasion": "Party"
+    },
+    "inventory": 94,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_32a09570",
+    "name": "Zara Electronics 92",
+    "description": "Where paper item trip service model but scene leg hundred.",
+    "price": 1308.27,
+    "category": "electronics",
+    "brand": "Zara",
+    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Denim",
+      "color": "Green",
+      "fit": "Regular",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 24,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_1736857e",
+    "name": "Nike Footwear 93",
+    "description": "Already decade get red great green girl base hot staff relate.",
+    "price": 2913.86,
+    "category": "footwear",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "XL",
+      "material": "Cotton",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 26,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_f2961452",
+    "name": "Nike Electronics 94",
+    "description": "Chair smile happy administration west up prove employee around.",
+    "price": 1569.03,
+    "category": "electronics",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "M",
+      "material": "Leather",
+      "color": "Blue",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Adult",
+      "occasion": "Casual"
+    },
+    "inventory": 42,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_69147cba",
+    "name": "Puma Accessories 95",
+    "description": "Democratic visit finish financial attention task bring inside minute save political level.",
+    "price": 1323.62,
+    "category": "accessories",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "S",
+      "material": "Mesh",
+      "color": "Green",
+      "fit": "Loose",
+      "gender": "Male",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 26,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_a3ca9136",
+    "name": "Puma Footwear 96",
+    "description": "Grow nature off country degree travel.",
+    "price": 2541.0,
+    "category": "footwear",
+    "brand": "Puma",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Mesh",
+      "color": "Green",
+      "fit": "Loose",
+      "gender": "Female",
+      "age_group": "Teen",
+      "occasion": "Party"
+    },
+    "inventory": 65,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_97ba0d71",
+    "name": "Nike Home 97",
+    "description": "Pattern method plant now travel happen.",
+    "price": 2405.93,
+    "category": "home",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Polyester",
+      "color": "White",
+      "fit": "Athletic",
+      "gender": "Male",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 25,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  },
+  {
+    "id": "prod_a44aaa1a",
+    "name": "Nike Accessories 98",
+    "description": "Market church voice increase real social be talk.",
+    "price": 2852.67,
+    "category": "accessories",
+    "brand": "Nike",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Leather",
+      "color": "Black",
+      "fit": "Athletic",
+      "gender": "Unisex",
+      "age_group": "Teen",
+      "occasion": "Formal"
+    },
+    "inventory": 71,
+    "has3DModel": true,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": true
+  },
+  {
+    "id": "prod_363770d7",
+    "name": "Gucci Home 99",
+    "description": "Grow rate do tough establish institution station place.",
+    "price": 1074.1,
+    "category": "home",
+    "brand": "Gucci",
+    "imageUrl": "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+      "https://images.unsplash.com/photo-1587825140708-7d4f45b81c0a?w=400"
+    ],
+    "features": {
+      "size": "L",
+      "material": "Denim",
+      "color": "Red",
+      "fit": "Regular",
+      "gender": "Female",
+      "age_group": "Kids",
+      "occasion": "Casual"
+    },
+    "inventory": 13,
+    "has3DModel": false,
+    "modelUrl": "https://cdn.example.com/models/sample_model.glb",
+    "arEnabled": false
+  }
+]
