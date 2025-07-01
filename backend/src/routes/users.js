@@ -211,7 +211,7 @@ router.get('/interactions/:userId', async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-
+    console.log("User id: ",user.id)
     const interactions = await prisma.userInteraction.findMany({
       where: { userId: user.id },
       include: {

@@ -8,8 +8,10 @@ import {
   Home, 
   Package, 
   User,
-  Store
+  Store,
+  Heart
 } from 'lucide-react'
+
 
 interface LayoutProps {
   children: ReactNode
@@ -22,8 +24,9 @@ const Layout = ({ children }: LayoutProps) => {
   const navigation = [
     { name: 'Home', href: '/', icon: Home },
     { name: 'Products', href: '/products', icon: Package },
-    { name: 'Cart', href: '/cart', icon: ShoppingCart },
     { name: 'Profile', href: '/profile', icon: User },
+    { name: 'For You', href: '/foryou', icon: Heart },
+    { name: 'Social Sync', href: '/', icon: null },
   ]
 
   const isActive = (path: string) => {
@@ -58,11 +61,12 @@ const Layout = ({ children }: LayoutProps) => {
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
+                    {Icon?<Icon className="h-4 w-4" />:<img src='/src/assets/social_sync.svg' className='h-4 w-4'/>}
                     <span>{item.name}</span>
                   </Link>
                 )
               })}
+              
             </nav>
 
             {/* User section */}
@@ -114,7 +118,7 @@ const Layout = ({ children }: LayoutProps) => {
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
+                     {Icon?<Icon className="h-4 w-4" />:<img src='/src/assets/social_sync.svg' className='h-4 w-4'/>}
                     <span>{item.name}</span>
                   </Link>
                 )

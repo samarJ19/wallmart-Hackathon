@@ -214,16 +214,15 @@ async def get_recommendations(
     try:
         # Get user interactions (used to determine if new user)
         user_interactions = await get_user_interactions(user_id)
-        
         # Get recommendations using the new BanditManager interface
         recommendations_response = bandit_manager.get_recommendations(
-            user_id=user_id,
-            n_products=n_products,
-            context=category,
-            user_interactions_count=len(user_interactions), # Use interaction count
-            exclude_products=[],
-            recommendation_strategy=recommendation_type # Renamed parameter
-        )
+    user_id=user_id,
+    n_products=n_products,
+    context="global",  # This will now use ALL bandits
+    user_interactions_count=len(user_interactions),
+    exclude_products=[],
+    recommendation_strategy="bandit"  # or "adaptive"
+)
         
         # Extract recommended products
         recommendations = recommendations_response["recommendations"]

@@ -7,7 +7,7 @@ Includes robust cold start solution for new users.
 import numpy as np
 import math
 from abc import ABC, abstractmethod
-from typing import List, Dict, Tuple, Optional, Any, Union
+from typing import List, Dict, Tuple, Optional, Any, Union,Set
 import json
 import logging
 from dataclasses import dataclass
@@ -246,37 +246,59 @@ class MultiArmedBandit(ABC):
         """
         Select multiple products for recommendation ensuring diversity.
         """
-        exclude_products = set(exclude_products or []) # type: ignore
+        # Initialize exclude_products as a set for efficient lookups and additions
+        # Use a type hint for clarity
+        current_exclude_products: Set[str] = set(exclude_products or [])
         recommended_product_ids = []
-        
-        available_arms_indices = [i for i, pid in enumerate(self.product_ids) if pid not in exclude_products] # type: ignore
+
+        # available_arms_indices will be a list of original indices
+        available_arms_indices = [i for i, pid in enumerate(self.product_ids) if pid not in current_exclude_products]
 
         if not available_arms_indices:
             logger.warning("No products available after exclusions for bandit selection.")
             return []
 
-        for _ in range(min(n_products, len(available_arms_indices))):
-            # Temporarily adjust bandit state to pick from remaining
+        # Determine how many products to actually select, up to n_products or available
+        num_to_select =  len(available_arms_indices)
+
+        for _ in range(num_to_select):
+            if not available_arms_indices: # Check if still available arms after previous selections
+                break
+
+            # Create a temporary bandit for the current selection round
+            # This temporary bandit only considers the currently available arms
             temp_bandit = type(self)(
                 products=[self.products[self.product_ids[i]] for i in available_arms_indices]
             )
-            temp_bandit.counts = self.counts[available_arms_indices]
-            temp_bandit.rewards = self.rewards[available_arms_indices]
+
+            # Map the counts    and rewards to the temporary bandit's arms
+            temp_bandit.counts = [self.counts[i] for i in available_arms_indices]
+            temp_bandit.rewards = [self.rewards[i] for i in available_arms_indices]
             temp_bandit.total_pulls = self.total_pulls # total pulls is global
 
+            # Select an arm from the temporary bandit
             selected_temp_arm_idx = temp_bandit.select_arm()
             
-            # Map back to original arm index and product ID
+            if selected_temp_arm_idx == -1: # No arm could be selected by temp_bandit
+                break
+
+            # Map the selected temporary arm index back to the original arm index
             original_arm_idx = available_arms_indices[selected_temp_arm_idx]
             selected_product_id = self.product_ids[original_arm_idx]
 
             recommended_product_ids.append(selected_product_id)
-            exclude_products.append(selected_product_id) # type: ignore # Exclude for next selection
             
-            # Remove the selected arm from available_arms_indices for the next iteration
+            # Exclude the selected product from future considerations in this selection process
+            # Use .add() for sets
+            current_exclude_products.add(selected_product_id) 
+            
+            # Remove the selected arm's original index from available_arms_indices for the next iteration
+            # This is crucial for "diversity" as it prevents re-selection within the same batch
             available_arms_indices.pop(selected_temp_arm_idx)
 
+        # Retrieve the actual Product objects based on the recommended product IDs
         return [self.products[pid] for pid in recommended_product_ids]
+
 
     def update_rewards(self, interactions: List[UserInteraction]) -> None:
         """
@@ -380,23 +402,37 @@ class UCBBandit(MultiArmedBandit):
         """
         Select arm using UCB strategy.
         """
+        if self.n_arms == 0:
+            logger.warning("No arms available for selection in UCB bandit.")
+            return -1 # Or raise an appropriate error
+
         unpulled_arms = np.where(self.counts == 0)[0]
         if len(unpulled_arms) > 0:
-            selected_arm = unpulled_arms[0]
+            # Randomly select one of the arms that hasn't been pulled yet
+            selected_arm = np.random.choice(unpulled_arms)
             logger.debug(f"UCB: Pulling unpulled product {self.product_ids[selected_arm]}")
             return int(selected_arm)
 
+        # If all arms have been pulled at least once, apply UCB strategy.
+        # Ensure total_pulls is at least 1 for the math.log function to avoid domain error.
+        # This handles the case where temp_bandit.total_pulls might be 0 but its contained arms
+        # have all been pulled (i.e., counts > 0 for all).
+        effective_total_pulls_for_log = max(1, self.total_pulls)
+
         ucb_values = np.zeros(self.n_arms)
         for i in range(self.n_arms):
+            # avg_reward will not have division by zero here because unpulled_arms check passed
             avg_reward = self.rewards[i] / self.counts[i]
+            
             confidence_interval = math.sqrt(
-                (self.confidence_level * math.log(self.total_pulls)) / self.counts[i]
+                (self.confidence_level * math.log(effective_total_pulls_for_log)) / self.counts[i]
             )
             ucb_values[i] = avg_reward + confidence_interval
         
         selected_arm = np.argmax(ucb_values)
         logger.debug(f"UCB: selected product {self.product_ids[selected_arm]} with UCB value {ucb_values[selected_arm]:.3f}")
         return int(selected_arm)
+
 
 
 class BanditManager:
@@ -476,16 +512,18 @@ class BanditManager:
             return False
 
     def get_recommendations(self, user_id: str, n_products: int = 5,
-                          context: str = "global",
-                          user_interactions_count: int = 0, # Simplified from full interactions list
-                          exclude_products: Optional[List[str]] = None,
-                          recommendation_strategy: str = "adaptive") -> Dict[str, Any]:
+                      context: str = "global",
+                      user_interactions_count: int = 0,
+                      exclude_products: Optional[List[str]] = None,
+                      recommendation_strategy: str = "adaptive") -> Dict[str, Any]:
         """
         Provides product recommendations based on strategy.
         'adaptive': Uses cold start for new users, bandit otherwise.
         'cold_start': Always uses cold start.
         'trending': Always uses trending products.
         'bandit': Always uses the bandit for the given context.
+        
+        When context="global", gets recommendations from all available bandits.
         """
         exclude_products = exclude_products or []
         recommended_products: List[Product] = []
@@ -497,7 +535,7 @@ class BanditManager:
             if recommendation_strategy == "cold_start" or (recommendation_strategy == "adaptive" and is_new_user):
                 if self.cold_start_recommender:
                     recommended_products = self.cold_start_recommender.get_cold_start_recommendations(
-                         exclude_products=exclude_products
+                        exclude_products=exclude_products
                     )
                     source_type = "cold_start"
                 else:
@@ -513,22 +551,36 @@ class BanditManager:
                     logger.warning("Cold start recommender not initialized, cannot provide trending recommendations.")
 
             elif recommendation_strategy == "bandit" or (recommendation_strategy == "adaptive" and not is_new_user):
-                bandit = self.bandits.get(context)
-                if bandit:
-                    recommended_products = bandit.select_products(n_products=n_products, exclude_products=exclude_products)
-                    source_type = "bandit"
+                # NEW: Handle global context by getting recommendations from all bandits
+                if context == "global":
+                    if self.bandits:
+                        recommended_products = self._get_global_recommendations(n_products, exclude_products)
+                        source_type = "global_bandit"
+                    else:
+                        logger.warning("No bandits available for global recommendations. Falling back to cold start.")
+                        if self.cold_start_recommender:
+                            recommended_products = self.cold_start_recommender.get_cold_start_recommendations(
+                                exclude_products=exclude_products
+                            )
+                            source_type = "cold_start_fallback"
                 else:
-                    logger.warning(f"Bandit '{context}' not found. Falling back to cold start (if available).")
-                    if self.cold_start_recommender:
-                        recommended_products = self.cold_start_recommender.get_cold_start_recommendations(
-                             exclude_products=exclude_products
-                        )
-                        source_type = "cold_start_fallback"
+                    # Use specific context bandit as before
+                    bandit = self.bandits.get(context)
+                    if bandit:
+                        recommended_products = bandit.select_products(n_products=n_products, exclude_products=exclude_products)
+                        source_type = "bandit"
+                    else:
+                        logger.warning(f"Bandit '{context}' not found. Falling back to cold start (if available).")
+                        if self.cold_start_recommender:
+                            recommended_products = self.cold_start_recommender.get_cold_start_recommendations(
+                                exclude_products=exclude_products
+                            )
+                            source_type = "cold_start_fallback"
 
             # If no products obtained, try a last-resort cold start if not already used
             if not recommended_products and self.cold_start_recommender and source_type not in ["cold_start", "cold_start_fallback"]:
                 recommended_products = self.cold_start_recommender.get_cold_start_recommendations(
-                     exclude_products=exclude_products
+                    exclude_products=exclude_products
                 )
                 source_type = "cold_start_last_resort"
 
@@ -553,11 +605,11 @@ class BanditManager:
                 "category": product.category,
                 "imageUrl": product.imageUrl
             }
-            for product in recommended_products[:n_products]
+            for product in recommended_products
         ]
         
         logger.info(f"Generated {len(response_products)} recommendations for user {user_id} "
-                   f"from {source_type} using strategy '{recommendation_strategy}'.")
+                f"from {source_type} using strategy '{recommendation_strategy}'.")
 
         return {
             "user_id": user_id,
@@ -570,6 +622,78 @@ class BanditManager:
                 "timestamp": datetime.now().isoformat()
             }
         }
+
+    def _get_global_recommendations(self, n_products: int, exclude_products: List[str]) -> List[Product]:
+        """
+        Get recommendations from all available bandits to fill the page.
+        Returns as many recommendations as possible from all categories.
+        """
+        all_recommendations = []
+        
+        logger.info(f"Found {len(self.bandits)} bandits: {list(self.bandits.keys())}")
+        
+        # Get recommendations from each available bandit
+        for bandit_id, bandit in self.bandits.items():
+            try:
+                # Request the full n_products from each bandit to maximize variety
+                # We'll filter and limit later
+                bandit_recs = bandit.select_products(
+                    n_products=n_products,  # Get full amount from each bandit
+                    exclude_products=exclude_products
+                )
+                
+                logger.info(f"Bandit '{bandit_id}' ({type(bandit).__name__}) returned {len(bandit_recs)} recommendations")
+                
+                    
+                all_recommendations.extend(bandit_recs)
+                
+            except Exception as e:
+                logger.warning(f"Error getting recommendations from bandit '{bandit_id}': {e}")
+        
+        logger.info(f"Before deduplication: {len(all_recommendations)} total recommendations")
+        
+        # Debug: Log product IDs to check for duplicates
+        product_ids = [product.id for product in all_recommendations]
+        logger.info(f"Product IDs collected: {product_ids}")
+        
+        # Remove duplicates while preserving order
+        seen_products = set(exclude_products)  # Start with excluded products
+        unique_recommendations = []
+        
+        for product in all_recommendations:
+            if product.id not in seen_products:
+                unique_recommendations.append(product)
+                seen_products.add(product.id)
+            else:
+                logger.debug(f"Duplicate product filtered: {product.id}")
+        
+        logger.info(f"After deduplication: {len(unique_recommendations)} unique recommendations")
+        
+        # Shuffle to avoid bias towards first bandits
+        import random
+        random.shuffle(unique_recommendations)
+        
+        # Take up to n_products for the final response
+        final_recommendations = unique_recommendations
+        
+        # Debug logging
+        logger.info(f"Global recommendations: Combined {len(all_recommendations)} total recommendations, "
+                f"filtered to {len(unique_recommendations)} unique products, "
+                f"returning {len(final_recommendations)} final recommendations")
+        
+        # Log distribution by category for debugging
+        category_distribution = {}
+        for product in final_recommendations:
+            category = getattr(product, 'source_bandit', getattr(product, 'category', 'unknown'))
+            category_distribution[category] = category_distribution.get(category, 0) + 1
+        
+        logger.info(f"Final distribution by bandit/category: {category_distribution}")
+        
+        # Additional debug: log actual product IDs being returned
+        final_ids = [product.id for product in final_recommendations]
+        logger.info(f"Final product IDs: {final_ids}")
+        
+        return final_recommendations
     
     def get_bandit_stats(self, bandit_id: str) -> Optional[Dict[str, Any]]:
         """Get detailed statistics for a specific bandit."""

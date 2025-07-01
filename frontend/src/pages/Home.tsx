@@ -7,7 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ShoppingCart, Filter, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ShoppingCart,
+  Filter,
+  Heart,
+  ChevronLeft,
+  ChevronRight,
+  Group,
+} from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { api, useAuthenticatedAPI } from "@/services/api";
 import { type Product } from "@/types";
@@ -20,7 +27,7 @@ const categories = [
   "appliances",
   "sports",
   "accessories",
-  "home"
+  "home",
 ];
 
 const PRODUCTS_PER_PAGE = 12;
@@ -47,7 +54,7 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const authAPI = useAuthenticatedAPI();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     async function getProduct() {
       try {
@@ -55,29 +62,32 @@ export default function Home() {
         const res = await api.get("api/products/genproducts");
         setProducts(Array.isArray(res.data.products) ? res.data.products : []);
       } catch (createError) {
-        console.error("Error while getting products from database:", createError);
+        console.error(
+          "Error while getting products from database:",
+          createError
+        );
         setProducts([]);
       } finally {
         setLoading(false);
       }
     }
-    
+
     getProduct();
-    
+
     async function syncUser() {
       try {
         await authAPI.post("/api/users/sync");
       } catch (createError) {
         console.error("Error creating user:", createError);
-      }  
+      }
     }
-    
+
     syncUser();
   }, []);
 
   const filteredProducts = useMemo(() => {
     if (!Array.isArray(products)) return [];
-    
+
     if (selectedCategory === "All") {
       return products;
     }
@@ -97,36 +107,13 @@ export default function Home() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg border-r fixed h-full z-10">
-        <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Navigation</h2>
-          <nav className="space-y-4">
-            <button
-              onClick={() => navigate('/cart')}
-              className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              <span className="font-medium">Cart</span>
-            </button>
-            <button
-              onClick={() => navigate('/foryou')}
-              className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <Heart className="w-5 h-5" />
-              <span className="font-medium">For You</span>
-            </button>
-          </nav>
-        </div>
-      </aside>
-
       {/* Main Content */}
-      <div className="flex-1 ml-64">
+      <div className="flex-1 ">
         {/* Header */}
         <header className="bg-white shadow-sm border-b sticky top-0 z-5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -155,13 +142,20 @@ export default function Home() {
                   Filter by category:
                 </span>
               </div>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <SelectTrigger className="w-48">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category) => (
-                    <SelectItem key={category} value={category} className="capitalize">
+                    <SelectItem
+                      key={category}
+                      value={category}
+                      className="capitalize"
+                    >
                       {category}
                     </SelectItem>
                   ))}
@@ -201,39 +195,47 @@ export default function Home() {
                   </button>
 
                   <div className="flex gap-2">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                      // Show first page, last page, current page, and pages around current page
-                      const showPage = 
-                        page === 1 || 
-                        page === totalPages || 
-                        (page >= currentPage - 1 && page <= currentPage + 1);
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => {
+                        // Show first page, last page, current page, and pages around current page
+                        const showPage =
+                          page === 1 ||
+                          page === totalPages ||
+                          (page >= currentPage - 1 && page <= currentPage + 1);
 
-                      if (!showPage) {
-                        // Show ellipsis for gaps
-                        if (page === currentPage - 2 || page === currentPage + 2) {
-                          return (
-                            <span key={page} className="px-3 py-2 text-sm text-gray-500">
-                              ...
-                            </span>
-                          );
+                        if (!showPage) {
+                          // Show ellipsis for gaps
+                          if (
+                            page === currentPage - 2 ||
+                            page === currentPage + 2
+                          ) {
+                            return (
+                              <span
+                                key={page}
+                                className="px-3 py-2 text-sm text-gray-500"
+                              >
+                                ...
+                              </span>
+                            );
+                          }
+                          return null;
                         }
-                        return null;
-                      }
 
-                      return (
-                        <button
-                          key={page}
-                          onClick={() => handlePageChange(page)}
-                          className={`px-3 py-2 text-sm font-medium rounded-lg ${
-                            currentPage === page
-                              ? 'bg-blue-600 text-white'
-                              : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50'
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      );
-                    })}
+                        return (
+                          <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`px-3 py-2 text-sm font-medium rounded-lg ${
+                              currentPage === page
+                                ? "bg-blue-600 text-white"
+                                : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      }
+                    )}
                   </div>
 
                   <button
@@ -259,10 +261,9 @@ export default function Home() {
                 No products found
               </h3>
               <p className="text-gray-600">
-                {selectedCategory === "All" 
-                  ? "No products available at the moment" 
-                  : "Try selecting a different category"
-                }
+                {selectedCategory === "All"
+                  ? "No products available at the moment"
+                  : "Try selecting a different category"}
               </p>
             </div>
           )}
