@@ -1,7 +1,7 @@
 const express = require('express');
 const { requireAuth, clerkClient, getAuth } = require('@clerk/express');
 const router = express.Router();
-
+const axios = require("axios");
 // GET /api/users/profile - Get user profile with ML insights
 router.get('/profile', requireAuth(), async (req, res) => {
   try {
@@ -142,7 +142,20 @@ router.post('/interactions', requireAuth(), async (req, res) => {
     if (['tick', 'cart_add', 'purchase'].includes(action)) {
       await updateUserPreferences(prisma, user.id, productId, action);
     }
-
+    //Add this interaction to ML service
+    try{
+      await axios.post(
+              `http://localhost:8000/feedback/record`,{
+                user_id:user.id,
+                product_id:productId,
+                action,
+                reward
+              }
+            );
+    }catch(err){
+      console.log("Got error while adding interaction to ml service",err);
+      res.status(500).json({message:"Got error while adding interaction to ml service"})
+    }
     res.json({ 
       success: true, 
       interaction: {
@@ -194,6 +207,38 @@ router.put('/preferences', requireAuth(), async (req, res) => {
   } catch (error) {
     console.error('Error updating preferences:', error);
     res.status(500).json({ error: 'Failed to update preferences' });
+  }
+});
+
+router.get('/interactions/all', async (req, res) => {
+  try {
+    const { prisma } = req;
+    const { limit = 50, offset = 0 } = req.query;
+
+    const interactions = await prisma.userInteraction.findMany({
+      include: {
+        product: {
+          select: {
+            id: true,
+            name: true,
+            imageUrl: true,
+            price: true,
+            category: true,
+            description:true,
+            brand:true
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: parseInt(limit),
+      skip: parseInt(offset)
+    });
+
+    res.json({ interactions });
+
+  } catch (error) {
+    console.error('Error fetching interactions:', error);
+    res.status(500).json({ error: 'Failed to fetch interactions' });
   }
 });
 

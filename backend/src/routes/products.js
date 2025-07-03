@@ -1,14 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { getAuth, requireAuth } = require("@clerk/express");
-// Middleware to get user ID (allows both authenticated and unauthenticated requests)
-const getUser = (req, next) => {
-  // If user is authenticated via Clerk middleware, userId will be available
-  if (getAuth(req)) {
-    req.userId = getAuth(req);
-  }
-  next();
-};
 
 router.get("/genproducts", async (req,res)=>{
   try{
@@ -280,7 +272,7 @@ router.get("/:id", requireAuth(), async (req, res) => {
       arEnabled: product.arEnabled,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
-      stats: {
+      stats: {  //can be used for ml 
         totalInteractions: product._count.interactions,
         inCarts: product._count.cartItems,
         totalOrders: product._count.orderItems,
@@ -393,12 +385,12 @@ router.get("/brands/list", async (req, res) => {
 });
 
 // POST /api/products/:id/view - Track product view (for ML)
-router.post("/:id/view", getUser, async (req, res) => {
+router.post("/:id/view", requireAuth(), async (req, res) => {
   try {
     const { prisma } = req;
     const { id } = req.params;
     const { context } = req.body;
-
+    const { userId } = getAuth(req);
     // Check if product exists
     const product = await prisma.product.findUnique({
       where: { id },
@@ -408,10 +400,10 @@ router.post("/:id/view", getUser, async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    // If user is authenticated, track the interaction
-    if (req.userId) {
+    
+    if (userId) {
       const user = await prisma.user.findUnique({
-        where: { clerkId: req.userId },
+        where: { clerkId: userId },
       });
 
       if (user) {

@@ -1,6 +1,8 @@
-
+k
 
 =>The product data should include features these features include products popularity , its category and other relevant features that can be used to recommend it to someone how has joined your platform for the first time ! Although we can start with these features but these features need to change periodically
 
 ## have to fix select_product from bandit.py: when will it start to learn user preference so that it give more weight to categories which user like instead of generating recommendation from each category 
 
+What are the issues in this bandit.py . I have a very less understanding of this file and of ml and python so I have generated this code 
+My main purpose was to build a recommendation system which utilizes reinforcement learning because i wanted to give user a tick and cross button so it would work like a feedback for the system. tick means user like this product and product similar to it and just opposite for cross. For simplicity purpose it was recommended to me that I should use MAB algorithm. Now after spending hours of my time I don't see it working what went wrong ? How can I fix it ? Was it a good option from the beginning (given I am preparing this whole thing for my personal project and for an upcoming hackathon)? Is too less data for training is the main culprit here ? Should I have just used some simple pre-trained model for recommendation system and fine-tune it for my use ?

@@ -10,15 +10,12 @@ import {
 import {
   ShoppingCart,
   Filter,
-  Heart,
   ChevronLeft,
   ChevronRight,
-  Group,
 } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { api, useAuthenticatedAPI } from "@/services/api";
 import { type Product } from "@/types";
-import { useNavigate } from "react-router-dom";
 
 const categories = [
   "All",
@@ -53,7 +50,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const authAPI = useAuthenticatedAPI();
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function getProduct() {

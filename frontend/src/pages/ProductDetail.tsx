@@ -15,7 +15,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { type Product } from "@/types";
 import { useAuthenticatedAPI } from "@/services/api";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // Props interface for the component
 interface ProductDetailPageProps {
@@ -36,14 +36,15 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const { productId } = useParams()
   const authAPI = useAuthenticatedAPI();
   useEffect(() => {
-    console.log("Got productId:",productId)
+
     if (productId) {
       // Simulate API call
       const fetchProduct = async () => {
         setLoading(true);
         const productResponse = await authAPI.get(`/api/products/${productId}`);
-
+        await authAPI.post(`/api/products/${productId}/view`);
         setProduct(productResponse.data.product);
+        //we can show similar products in a grid
         setLoading(false);
       };
 
