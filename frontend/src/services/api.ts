@@ -66,21 +66,6 @@ export const useAuthenticatedAPI = () => {
   return authenticatedAPI;
 };
 
-// Usage examples:
-
-// For unauthenticated requests:
-// const response = await api.get('/api/public-data');
-
-// For authenticated requests in components:
-// const MyComponent = () => {
-//   const authAPI = useAuthenticatedAPI();
-//   
-//   const fetchUserData = async () => {
-//     const response = await authAPI.get('/api/users/profile');
-//     return response.data; // You control what you return
-//   };
-// };
-
 // Types (keep these)
 export interface Product {
   id: string;

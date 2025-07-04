@@ -4,29 +4,126 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"  // or mysql
+  provider = "postgresql" // or mysql
   url      = env("DATABASE_URL")
 }
 
 // User Management (Clerk Integration)
 model User {
-  id            String   @id @default(cuid())
-  clerkId       String   @unique  // Clerk User ID
-  email         String   @unique
-  name          String
-  avatar        String?
-  preferences   Json?    // User preferences for ML
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  
+  id          String   @id @default(cuid())
+  clerkId     String   @unique // Clerk User ID
+  email       String   @unique
+  name        String
+  avatar      String?
+  preferences Json? // User preferences for ML
+  status      String   @default("offline") // online, offline, busy
+  lastSeen    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
   // Relations
-  cartItems     CartItem[]
-  orders        Order[]
-  interactions  UserInteraction[]
-  chatSessions  ChatSession[]
-  arSessions    ARSession[]
-  
+  cartItems    CartItem[]
+  orders       Order[]
+  interactions UserInteraction[]
+  arSessions   ARSession[]
+
+  // New chat-related relations
+  groupChatMembers GroupChatMember[]
+  chatMessages     ChatMessage[]
+  callParticipants CallParticipant[]
+  initiatedCalls   GroupCall[]       @relation("CallInitiator")
+
   @@map("users")
+}
+
+model GroupChat {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  avatar      String? // Group avatar/image
+  createdBy   String
+  isActive    Boolean  @default(true)
+  maxMembers  Int      @default(10) // Limit for hackathon
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  members  GroupChatMember[]
+  messages ChatMessage[]
+  calls    GroupCall[]
+
+  @@map("group_chats")
+}
+
+model GroupChatMember {
+  id          String   @id @default(cuid())
+  groupChatId String
+  userId      String
+  role        String   @default("member") // admin, member
+  joinedAt    DateTime @default(now())
+  lastRead    DateTime @default(now()) // For unread message tracking
+  isActive    Boolean  @default(true) // For soft delete
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupChat GroupChat @relation(fields: [groupChatId], references: [id], onDelete: Cascade)
+
+  @@unique([groupChatId, userId])
+  @@map("group_chat_members")
+}
+
+model ChatMessage {
+  id          String   @id @default(cuid())
+  groupChatId String
+  userId      String
+  content     String
+  messageType String   @default("text") // text, image, file, product_share, system
+  metadata    Json? // For product links, file info, etc.
+  isEdited    Boolean  @default(false)
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupChat GroupChat @relation(fields: [groupChatId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+model GroupCall {
+  id          String    @id @default(cuid())
+  groupChatId String
+  initiatedBy String
+  callType    String    @default("video") // video, audio
+  status      String    @default("active") // active, ended, missed
+  startTime   DateTime  @default(now())
+  endTime     DateTime?
+  duration    Int? // Duration in seconds
+
+  // Relations
+  groupChat    GroupChat         @relation(fields: [groupChatId], references: [id], onDelete: Cascade)
+  initiator    User              @relation("CallInitiator", fields: [initiatedBy], references: [id])
+  participants CallParticipant[]
+
+  @@map("group_calls")
+}
+
+model CallParticipant {
+  id       String    @id @default(cuid())
+  callId   String
+  userId   String
+  joinedAt DateTime  @default(now())
+  leftAt   DateTime?
+  isActive Boolean   @default(true)
+  role     String    @default("participant") // host, participant
+
+  // Relations
+  call GroupCall @relation(fields: [callId], references: [id], onDelete: Cascade)
+  user User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([callId, userId])
+  @@map("call_participants")
 }
 
 // Product Management
@@ -39,54 +136,54 @@ model Product {
   brand       String
   imageUrl    String
   images      String[] // Multiple product images
-  features    Json     // ML features
+  features    Json // ML features
   inventory   Int      @default(0)
   isActive    Boolean  @default(true)
-  
+
   // AR specific fields
-  has3DModel  Boolean  @default(false)
-  modelUrl    String?  // 3D model URL
-  arEnabled   Boolean  @default(false)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  has3DModel Boolean @default(false)
+  modelUrl   String? // 3D model URL
+  arEnabled  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relations
-  cartItems     CartItem[]
-  orderItems    OrderItem[]
-  interactions  UserInteraction[]
-  arSessions    ARSession[]
-  
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
+  interactions UserInteraction[]
+  arSessions   ARSession[]
+
   @@map("products")
 }
 
 // Cart Management
 model CartItem {
-  id        String @id @default(cuid())
+  id        String   @id @default(cuid())
   userId    String
   productId String
-  quantity  Int    @default(1)
+  quantity  Int      @default(1)
   createdAt DateTime @default(now())
-  
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   @@unique([userId, productId])
   @@map("cart_items")
 }
-  
+
 // Order Management
 model Order {
-  id          String    @id @default(cuid())
-  userId      String
-  status      String    // 'pending', 'confirmed', 'shipped', 'delivered'
-  total       Float
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  user        User        @relation(fields: [userId], references: [id])
-  orderItems  OrderItem[]
-  
+  id        String   @id @default(cuid())
+  userId    String
+  status    String // 'pending', 'confirmed', 'shipped', 'delivered'
+  total     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+
   @@map("orders")
 }
 
@@ -95,11 +192,11 @@ model OrderItem {
   orderId   String
   productId String
   quantity  Int
-  price     Float  // Price at time of order
-  
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id])
-  
+  price     Float // Price at time of order
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
   @@map("order_items")
 }
 
@@ -108,70 +205,40 @@ model UserInteraction {
   id        String   @id @default(cuid())
   userId    String
   productId String
-  action    String   // 'view', 'tick', 'cross', 'cart_add', 'purchase', 'ar_view'
-  reward    Float    // Reward value for RL
-  context   Json?    // Additional context (page, time spent, etc.)
+  action    String // 'view', 'tick', 'cross', 'cart_add', 'purchase', 'ar_view'
+  reward    Float // Reward value for RL
+  context   Json? // Additional context (page, time spent, etc.)
   createdAt DateTime @default(now())
-  
-  user      User    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-  
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
   @@map("user_interactions")
-}
-
-// Chatbot Management
-model ChatSession {
-  id        String   @id @default(cuid())
-  userId    String
-  sessionId String   @unique
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  user      User         @relation(fields: [userId], references: [id])
-  messages  ChatMessage[]
-  
-  @@map("chat_sessions")
-}
-
-model ChatMessage {
-  id          String   @id @default(cuid())
-  sessionId   String
-  message     String
-  sender      String   // 'user' or 'bot'
-  intent      String?  // Detected intent
-  confidence  Float?   // Confidence score
-  metadata    Json?    // Additional metadata
-  createdAt   DateTime @default(now())
-  
-  session     ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  
-  @@map("chat_messages")
 }
 
 // AR Management
 model ARSession {
-  id          String   @id @default(cuid())
-  userId      String
-  productId   String
-  sessionId   String   @unique
-  duration    Int?     // Session duration in seconds
-  interactions Json?   // AR interaction data
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  user        User    @relation(fields: [userId], references: [id])
-  product     Product @relation(fields: [productId], references: [id])
-  
+  id           String   @id @default(cuid())
+  userId       String
+  productId    String
+  sessionId    String   @unique
+  duration     Int? // Session duration in seconds
+  interactions Json? // AR interaction data
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
   @@map("ar_sessions")
 }
 
 // Analytics & Metrics
 model Analytics {
   id        String   @id @default(cuid())
-  type      String   // 'ml_performance', 'chat_metrics', 'ar_usage'
-  data      Json     // Metrics data
+  type      String // 'ml_performance', 'chat_metrics', 'ar_usage'
+  data      Json // Metrics data
   createdAt DateTime @default(now())
-  
+
   @@map("analytics")
 }
