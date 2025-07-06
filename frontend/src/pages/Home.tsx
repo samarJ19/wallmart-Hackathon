@@ -16,6 +16,7 @@ import {
 import ProductCard from "@/components/ProductCard";
 import { api, useAuthenticatedAPI } from "@/services/api";
 import { type Product } from "@/types";
+import GroupChat from "@/components/GroupChat";
 
 const categories = [
   "All",
@@ -273,6 +274,7 @@ export default function Home() {
             </div>
           </div>
         </footer>
+        <GroupChat/>
       </div>
     </div>
   );

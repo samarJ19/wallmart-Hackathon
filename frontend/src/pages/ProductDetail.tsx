@@ -16,6 +16,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { type Product } from "@/types";
 import { useAuthenticatedAPI } from "@/services/api";
 import { useParams } from "react-router-dom";
+import GroupChat from "@/components/GroupChat";
+import ProductCard from "@/components/ProductCard";
 
 // Props interface for the component
 interface ProductDetailPageProps {
@@ -26,23 +28,23 @@ interface ProductDetailPageProps {
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   product: passedProduct,
 }) => {
-  
   const [product, setProduct] = useState<Product | null>(passedProduct || null);
   const [loading, setLoading] = useState(!passedProduct);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const { productId } = useParams()
+  const { productId } = useParams();
   const authAPI = useAuthenticatedAPI();
   useEffect(() => {
-
     if (productId) {
       // Simulate API call
       const fetchProduct = async () => {
         setLoading(true);
         const productResponse = await authAPI.get(`/api/products/${productId}`);
-        await authAPI.post(`/api/products/${productId}/view`);
+        await authAPI.post(`/api/products/${productId}/view`, {
+          context: "User is viewing the product",
+        });
         setProduct(productResponse.data.product);
         //we can show similar products in a grid
         setLoading(false);
@@ -330,6 +332,22 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </div>
         </div>
       </div>
+      {/* Similar Products Carousel */}
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4 text-gray-900">
+          Similar Products
+        </h3>
+        <div className="relative">
+          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+            {product.similarProducts?.map((similarProduct) => (
+              <div key={similarProduct.id} className="flex-shrink-0 w-64">
+                <ProductCard product={similarProduct} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <GroupChat />
     </div>
   );
 };

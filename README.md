@@ -1,4 +1,4 @@
-walmart-rl-ecommerce/
+```walmart-rl-ecommerce/
 ├── frontend/                    # React Frontend (Shared)
 │   ├── src/
 │   │   ├── components/
@@ -160,7 +160,7 @@ walmart-rl-ecommerce/
 ├── docker-compose.yml           # All services
 ├── .env.example                 # Environment template
 └── README.md                    # Main project README
-
+```
 
 # Feature branches for each team
 git checkout recommender
