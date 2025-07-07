@@ -1,60 +1,85 @@
- {
-            "id": "cmcjpiopu0000ukwcakgbo9lg",
-            "category": "electronics"
-        },
+{
+    "message": "Groups retrieved successfully",
+    "groups": [
         {
-            "id": "cmcjpiopv0001ukwcai2eid3k",
-            "category": "electronics"
-        },
-        {
-            "id": "cmcjpiopv0002ukwc5i2wti0u",
-            "category": "electronics"
-        },
-        {
-            "id": "cmcjpiopw0003ukwcfshxg4m4",
-            "category": "electronics"
-        },
-        {
-            "id": "cmcjpiopw0004ukwc3hnugf15",
-            "category": "electronics"
-        },
-        {
-            "id": "cmcjpiopw0005ukwcwl5qc54c",
-            "category": "clothing"
-        },
-        {
-            "id": "cmcjpiopw0006ukwc67lkggbe",
-            "category": "clothing"
-        },
-        {
-            "id": "cmcjpiopw0007ukwc836qkmxe",
-            "category": "clothing"
-        },
-        {
-            "id": "cmcjpiopw0008ukwcbgzvramg",
-            "category": "clothing"
-        },
-        {
-            "id": "cmcjpiopw0009ukwciotfzq1x",
-            "category": "clothing"
-        },
-        {
-            "id": "cmcjpiopw000aukwc0kvxqmup",
-            "category": "appliances"
-        },
-        {
-            "id": "cmcjpiopw000bukwc7du52jrv",
-            "category": "appliances"
-        },
-        {
-            "id": "cmcjpiopw000cukwcbv88ke3h",
-            "category": "appliances"
-        },
-        {
-            "id": "cmcjpiopw000dukwcd80kxwde",
-            "category": "appliances"
-        },
-        {
-            "id": "cmcjpiopw000eukwcok4niqcu",
-            "category": "appliances"
-        },
+            "id": "cmcrtaux90002uk9c2nlykmtj",
+            "groupChatId": "cmcrtauqm0000uk9cr0269m48",
+            "userId": "cmcchvzg60000uktg3g16d3rg",
+            "role": "admin",
+            "joinedAt": "2025-07-06T15:13:20.396Z",
+            "lastRead": "2025-07-06T15:13:20.396Z",
+            "isActive": true,
+            "groupChat": {
+                "id": "cmcrtauqm0000uk9cr0269m48",
+                "name": "group1",
+                "description": "test group for checking sync feature",
+                "avatar": null,
+                "createdBy": "cmcchvzg60000uktg3g16d3rg",
+                "isActive": true,
+                "maxMembers": 10,
+                "createdAt": "2025-07-06T15:13:20.159Z",
+                "updatedAt": "2025-07-06T15:13:20.159Z",
+                "members": [
+                    {
+                        "id": "cmcrtaux90002uk9c2nlykmtj",
+                        "groupChatId": "cmcrtauqm0000uk9cr0269m48",
+                        "userId": "cmcchvzg60000uktg3g16d3rg",
+                        "role": "admin",
+                        "joinedAt": "2025-07-06T15:13:20.396Z",
+                        "lastRead": "2025-07-06T15:13:20.396Z",
+                        "isActive": true,
+                        "user": {
+                            "id": "cmcchvzg60000uktg3g16d3rg",
+                            "name": "Samar Joshi",
+                            "avatar": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yejE5YzdPSGJFbHNpWXpwTVRObUhFU2lCUTMifQ",
+                            "status": "offline"
+                        }
+                    },
+                    {
+                        "id": "cmcrudk840001ukekh3lbhapl",
+                        "groupChatId": "cmcrtauqm0000uk9cr0269m48",
+                        "userId": "cmcho6hrs0000jrp0geu8pp12",
+                        "role": "member",
+                        "joinedAt": "2025-07-06T15:43:26.117Z",
+                        "lastRead": "2025-07-06T15:43:26.117Z",
+                        "isActive": true,
+                        "user": {
+                            "id": "cmcho6hrs0000jrp0geu8pp12",
+                            "name": "Jainam Singhai",
+                            "avatar": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yekJQWHM5OTVxZlhPQWVOclhPOWR2azh6NXAifQ",
+                            "status": "offline"
+                        }
+                    }
+                ],
+                "messages": [
+                    {
+                        "id": "cmcrudkeq0003ukeksvwxypbr",
+                        "groupChatId": "cmcrtauqm0000uk9cr0269m48",
+                        "userId": "cmcchvzg60000uktg3g16d3rg",
+                        "content": "Jainam Singhai has been added to the group",
+                        "messageType": "system",
+                        "metadata": {
+                            "action": "user_added",
+                            "addedUserId": "cmcho6hrs0000jrp0geu8pp12",
+                            "addedUserName": "Jainam Singhai"
+                        },
+                        "isEdited": false,
+                        "isDeleted": false,
+                        "createdAt": "2025-07-06T15:43:26.355Z",
+                        "updatedAt": "2025-07-06T15:43:26.355Z",
+                        "user": {
+                            "id": "cmcchvzg60000uktg3g16d3rg",
+                            "name": "Samar Joshi",
+                            "avatar": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yejE5YzdPSGJFbHNpWXpwTVRObUhFU2lCUTMifQ"
+                        }
+                    }
+                ],
+                "_count": {
+                    "members": 2,
+                    "messages": 1
+                }
+            }
+        }
+    ],
+    "userId": "cmcchvzg60000uktg3g16d3rg"
+}

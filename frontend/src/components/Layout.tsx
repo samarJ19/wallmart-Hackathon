@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Home, Package, User, Store, Heart } from "lucide-react";
+import { ShoppingCart, Home, Package, User, Store, Heart, UserPlus } from "lucide-react";
 import { useChat } from "@/context/ChatContext";
 
 interface LayoutProps {
@@ -16,10 +16,10 @@ const Layout = ({ children }: LayoutProps) => {
 
   const navigation = [
     { name: "Home", href: "/", icon: Home },
-    { name: "Products", href: "/products", icon: Package },
     { name: "Profile", href: "/profile", icon: User },
     { name: "For You", href: "/foryou", icon: Heart },
     { name: "Social Sync", href: "/", icon: null },
+    { name:"Create Group/Invite Users", href:"/manageusers", icon:UserPlus}
   ];
 
   const isActive = (path: string) => {

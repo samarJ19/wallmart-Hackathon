@@ -10,6 +10,7 @@ import SignUpPage from './pages/auth/SignUpPage'
 import { Toaster } from '@/components/ui/sonner'
 import Foryou from './components/Foryou'
 import ProductDetailPage from './pages/ProductDetail'
+import GroupManagementPage from './pages/GroupManagementPage'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/foryou" element={<Foryou />} />
                     <Route path="/product/:productId" element={<ProductDetailPage />} />
+                    <Route path="/manageusers" element={<GroupManagementPage />} />
                   </Routes>
                 </Layout>
               </SignedIn>

@@ -4,7 +4,8 @@ const { PrismaClient } = require('@prisma/client');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { clerkMiddleware } = require('@clerk/express');
-const { verifyToken } = require('@clerk/backend');
+const  { socketAuth }  = require('./middleware/socketAuth');
+
 require('dotenv').config();
 
 // Import routes
@@ -82,53 +83,6 @@ app.get('/health', (req, res) => {
     activeUsers: activeUsers.size
   });
 });
-
-// Socket.IO Authentication Middleware
-const socketAuth = async (socket, next) => {
-  try {
-    const token = socket.handshake.auth.token;
-    
-    if (!token) {
-      return next(new Error('Authentication token required'));
-    }
-
-    const decoded = await verifyToken(token);
-    
-    if (!decoded || !decoded.sub) {
-      return next(new Error('Invalid token'));
-    }
-
-    // Get user from database using Clerk ID
-    const user = await prisma.user.findUnique({
-      where: { clerkId: decoded.sub },
-      select: {
-        id: true,
-        clerkId: true,
-        name: true,
-        email: true,
-        avatar: true,
-        groupChatMembers: {
-          where: { isActive: true },
-          select: {
-            groupChatId: true,
-            role: true
-          }
-        }
-      }
-    });
-
-    if (!user) {
-      return next(new Error('User not found'));
-    }
-
-    socket.userId = user.id;
-    socket.user = user;
-    next();
-  } catch (error) {
-    console.error('Socket authentication error:', error);
-    next(new Error('Authentication failed'));
-  }
-};
 
 // Apply authentication middleware
 io.use(socketAuth);

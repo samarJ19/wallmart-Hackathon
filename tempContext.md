@@ -7,11 +7,11 @@ Add products which user has selected to buy in its order table,so it can be used
 Add conditional rendering on the basis of clerk's user object !
 
 ## Add social sync : chat feature !
-- Feature: Implement frontend to backend connection file = I have backend implementation ready which sets up the server for web socket now I need frontend setup for connecting my frontend to backend web socket. I am thinking of a file which establishes the connection sends requried auth token whenever necessary. Also it should give functions which I can directly use in my **groupchat component** to send/recieve messages. But generate only required and reusable functions no "over-engineering". In frontend I use react with vite+typescript. Only generate the above mentioned file you don't have to implement any other files. Server.js and group chat component is already complete. For your reference I am attaching backend code snippet so you can design the file with better context.
-- Fix server.js: fix the web socket auth
-- Fix: Change groupchat component, add loading state while data is being fetched from BE
+- Feature: Create group and Invite users to join group simple page 
+for create group there will be simple input boxes with fields: name & description
+Invite: It can follow the flow: select the group (all groups can be shown of the logged in user where he/she is admin and among these user can select his preferred group) in which you want to invite users, then search by user's name or userEmail => ideally there should be search suggestion feature here. But for now we will assume that user is entering correct user Email.
 - Feature: Share cart among users: Increase the width of chat component
-- add rate limitting on sending messages
+- Add rate limitting on sending messages
 
 ## Integrate chatbot
 
