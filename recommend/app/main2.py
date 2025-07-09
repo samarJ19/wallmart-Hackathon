@@ -8,7 +8,7 @@ import json
 from typing import List, Dict, Any, Optional
 import logging
 from contextlib import asynccontextmanager
-
+from pydantic import BaseModel, ValidationError
 # Import the simplified recommendation system
 from models.simplified import (
     SimplifiedRecommendationSystem,
@@ -21,7 +21,11 @@ from models.simplified import (
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
+class FeedbackRequest(BaseModel):
+    user_id: str
+    product_id: str
+    action: str
+    reward: Optional[float] = None
 
 # Configuration
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:3000")
@@ -329,23 +333,23 @@ async def get_cold_start_recommendations(
         raise HTTPException(status_code=500, detail="Failed to get cold start recommendations")
 
 @app.post("/feedback/record")
-async def record_user_feedback(
-    user_id: str,
-    product_id: str,
-    action: str,  # 'tick', 'cross', 'view', 'cart_add', etc.
-    reward: Optional[float] = None
-):
+async def record_user_feedback(request: FeedbackRequest):
     """
     Record user feedback (tick/cross) for real-time learning
     This endpoint allows immediate updates without waiting for database sync
     """
+    print(f"Received request: {request}")
+    print(f"user_id: {request.user_id}")
+    print(f"product_id: {request.product_id}")
+    print(f"action: {request.action}")
+    print(f"reward: {request.reward}")
     global recommendation_system
     
     if not recommendation_system:
         raise HTTPException(status_code=503, detail="Recommendation system not initialized")
     
     # Calculate reward if not provided
-    if reward is None:
+    if request.reward is None:
         reward_mapping = {
             'tick': 1.0,
             'cross': -0.5,
@@ -354,20 +358,22 @@ async def record_user_feedback(
             'purchase': 2.0,
             'ar_view': 0.3
         }
-        reward = reward_mapping.get(action, 0.0)
+        reward = reward_mapping.get(request.action, 0.0)
+    else:
+        reward = request.reward
     
     try:
         # Get product info
-        product = recommendation_system.products.get(product_id)
+        product = recommendation_system.products.get(request.product_id)
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
         
         # Create interaction object
         interaction = UserInteraction(
-            id=f"realtime_{user_id}_{product_id}_{int(datetime.now().timestamp())}",
-            userId=user_id,
-            productId=product_id,
-            action=action,
+            id=f"realtime_{request.user_id}_{request.product_id}_{int(datetime.now().timestamp())}",
+            userId=request.user_id,
+            productId=request.product_id,
+            action=request.action,
             reward=reward,
             context={"source": "realtime_feedback"},
             createdAt=datetime.now().isoformat(),
@@ -379,10 +385,10 @@ async def record_user_feedback(
         
         return {
             "status": "success",
-            "message": f"Recorded {action} feedback for user {user_id} on product {product_id}",
-            "user_id": user_id,
-            "product_id": product_id,
-            "action": action,
+            "message": f"Recorded {request.action} feedback for user {request.user_id} on product {request.product_id}",
+            "user_id": request.user_id,
+            "product_id": request.product_id,
+            "action": request.action,
             "reward": reward,
             "timestamp": datetime.now().isoformat()
         }
@@ -479,16 +485,6 @@ async def refresh_bandits(userId: str):
 async def get_bandit_stats():
     """Backward compatibility - get system stats"""
     return await get_system_stats()
-
-@app.post("/bandits/global/update")
-async def update_bandit_reward(
-    product_id: str,
-    reward: float,
-    user_id: str = "anonymous"
-):
-    """Backward compatibility - record interaction"""
-    action = "feedback" if reward > 0 else "negative_feedback"
-    return await record_user_feedback(user_id, product_id, action, reward)
 
 @app.get("/bandits/contexts")
 async def list_contexts():

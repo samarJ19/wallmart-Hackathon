@@ -49,6 +49,7 @@ router.post("/addproduct/:productId", requireAuth(), async (req, res) => {
     const { prisma } = req;
     const { quantity } = req.body;
     const { productId } = req.params
+    console.log("Prod. id: ",productId)
     const user = await prisma.user.findUnique({
       where: {
         clerkId: userId,
@@ -80,6 +81,7 @@ router.post("/addproduct/:productId", requireAuth(), async (req, res) => {
     });
     res.json({ message: "Added/updated cart Item", cartItem });
   } catch (err) {
+    console.log("Got the following error: ",err)
     console.log("Backend:Got error while putting data into DB");
     res.status(403).json({ message: err });
   }

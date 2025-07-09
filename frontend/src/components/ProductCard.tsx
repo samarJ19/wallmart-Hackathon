@@ -17,6 +17,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   //call user interaction with action for all these handlers with action :add to cart, like and dislike
   const handleAddToCart = async () => {
     try {
+      const res = await authApi.post(`/api/cart/addproduct/${product.id}`,{
+        quantity:1
+      });
       const response = await authApi.post("/api/users/interactions", {
         productId: product.id,
         action: "cart_add",

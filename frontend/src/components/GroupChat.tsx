@@ -14,6 +14,7 @@ import { useChat } from "@/context/ChatContext";
 import { useAuthenticatedAPI } from "@/services/api";
 import { useAuth } from "@clerk/clerk-react";
 import webSocketService from "@/services/webSocket";
+import type { CartItem } from "@/types";
 
 interface Group {
   id: string;
@@ -62,6 +63,11 @@ interface GroupMember {
   user: User;
 }
 
+interface SharedCart {
+  username: string;
+  cartItems: CartItem[];
+}
+
 const GroupChat = () => {
   const { isChatOpen, closeChat } = useChat();
   const { getToken } = useAuth();
@@ -73,9 +79,17 @@ const GroupChat = () => {
   const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
   const [loading, setLoading] = useState(false);
   const [messagesLoading, setMessagesLoading] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const authAPI = useAuthenticatedAPI();
   const [userIdBE, setUserIdBE] = useState("");
+  const [sharedCarts, setSharedCarts] = useState<{
+    [userId: string]: SharedCart;
+  }>({});
+  const [isMyCartShared, setIsMyCartShared] = useState(false);
+  const [myCartItems, setMyCartItems] = useState<CartItem[]>([]);
+  const [cartSharingFlag, setCartSharingFlag] = useState(false);
+
 
   useEffect(() => {
     if (isChatOpen) {
@@ -87,26 +101,40 @@ const GroupChat = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // WebSocket effect for selected group
+  // WebSocket connection effect
   useEffect(() => {
-    if (!selectedGroup) return;
-
     const initializeSocket = async () => {
       try {
         const token = (await getToken()) as string;
         await webSocketService.connect(token);
-        webSocketService.joinGroup(selectedGroup.id);
+        setIsConnected(true);
       } catch (error) {
         console.error("Error initializing socket:", error);
+        setIsConnected(false);
       }
     };
 
-    initializeSocket();
+    if (isChatOpen) {
+      initializeSocket();
+    }
 
-    // Set up event listeners
+    return () => {
+      setIsConnected(false);
+    };
+  }, [isChatOpen, getToken]);
+
+  // WebSocket effect for selected group - messages
+  useEffect(() => {
+    if (!selectedGroup || !isConnected) return;
+
+
+
+    webSocketService.joinGroup(selectedGroup.id);
+
+    // Set up message listener
     const unsubscribeMessage = webSocketService.onNewMessage(
       ({ message }: { message: any }) => {
-        // Ensure the message has the required properties
+        console.log("Received new message:", message);
         const formattedMessage: Message = {
           ...message,
           isDeleted: message.isDeleted || false,
@@ -119,7 +147,154 @@ const GroupChat = () => {
     return () => {
       unsubscribeMessage();
     };
-  }, [selectedGroup, getToken]);
+  }, [selectedGroup, isConnected]);
+
+  // Modify your cart sharing listeners useEffect to include more debugging
+  useEffect(() => {
+    if (!isConnected || !selectedGroup) {
+      return;
+    }
+
+    // Listen for cart sharing events
+    const unsubscribeCartStarted = webSocketService.onCartShareStarted(
+      ({
+        userId,
+        username,
+        cartItems,
+      }: {
+        userId: string;
+        username: string;
+        cartItems: any[];
+      }) => {
+        setSharedCarts((prev) => {
+          const updated = {
+            ...prev,
+            [userId]: {
+              username,
+              cartItems,
+            },
+          };
+          return updated;
+        });
+      }
+    );
+
+    const unsubscribeCartUpdated = webSocketService.onCartShareUpdated(
+      (data) => {
+        setSharedCarts((prev) => {
+          const updated = {
+            ...prev,
+            [data.userId]: {
+              ...prev[data.userId],
+              cartItems: data.cartItems,
+            },
+          };
+          return updated;
+        });
+      }
+    );
+
+    const unsubscribeCartStopped = webSocketService.onCartShareStopped(
+      (data) => {
+
+        setSharedCarts((prev) => {
+          const newCarts = { ...prev };
+          delete newCarts[data.userId];
+
+          return newCarts;
+        });
+      }
+    );
+
+    // Cleanup function
+    return () => {
+      unsubscribeCartStarted();
+      unsubscribeCartUpdated();
+      unsubscribeCartStopped();
+    };
+  }, [isConnected, selectedGroup,cartSharingFlag]);
+
+  // Also add this to your handleStartCartSharing function
+  const handleStartCartSharing = async () => {
+
+    if (!selectedGroup) {
+      return;
+    }
+
+    if (!isConnected) {
+      return;
+    }
+
+    try {
+
+      // Fetch current user's cart
+      const cartResponse = await authAPI.get("/api/cart/cartproducts");
+      const cartItems = cartResponse.data.cartData;
+
+      setIsMyCartShared(true);
+      setMyCartItems(cartItems);
+      setCartSharingFlag(prev => !prev);
+    } catch (error) {
+    }
+  };
+
+  const handleStopCartSharing = () => {
+    if (!selectedGroup) {
+      console.error("No group selected");
+      return;
+    }
+
+    if (!isConnected) {
+      console.error("WebSocket not connected");
+      return;
+    }
+
+    webSocketService.stopCartSharing(selectedGroup.id);
+    setIsMyCartShared(false);
+  };
+
+  const handleUpdateSharedCart = async () => {
+    if (!selectedGroup || !isMyCartShared) {
+      console.error("No group selected or cart not shared");
+      return;
+    }
+
+    if (!isConnected) {
+      console.error("WebSocket not connected");
+      return;
+    }
+
+    try {
+
+      // Fetch updated cart
+      const cartResponse = await authAPI.get("/api/cart/cartproducts");
+      const cartItems = cartResponse.data.cartData;
+
+      console.log("Fetched updated cart items:", cartItems);
+
+      // Emit update to WebSocket
+      webSocketService.updateSharedCart(selectedGroup.id, cartItems);
+
+      setMyCartItems(cartItems);
+
+      console.log("Cart sharing updated successfully");
+    } catch (error) {
+      console.error("Error updating shared cart:", error);
+    }
+  };
+
+  // Helper function to get total items in a cart
+  const getTotalItems = (cartItems: CartItem[]) => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  // Helper function to get total price of a cart
+  const getTotalPrice = (cartItems: CartItem[]) => {
+    return cartItems.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
+  };
 
   const fetchGroups = async () => {
     try {
@@ -136,9 +311,15 @@ const GroupChat = () => {
   };
 
   const handleGroupSelect = async (group: Group) => {
+    console.log("Selecting group:", group.id);
     setSelectedGroup(group);
     setShowMembers(false);
     setMessagesLoading(true);
+
+    // Reset cart sharing state when switching groups
+    setSharedCarts({});
+    setIsMyCartShared(false);
+    setMyCartItems([]);
 
     try {
       // Fetch messages for the selected group
@@ -229,12 +410,20 @@ const GroupChat = () => {
             {selectedGroup ? selectedGroup.name : "Group Chat"}
           </h2>
         </div>
-        <button
-          onClick={closeChat}
-          className="text-white hover:text-gray-200 transition-colors"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Connection status indicator */}
+          <div
+            className={`w-2 h-2 rounded-full ${
+              isConnected ? "bg-green-400" : "bg-red-400"
+            }`}
+          />
+          <button
+            onClick={closeChat}
+            className="text-white hover:text-gray-200 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       {/* Group List */}
@@ -362,11 +551,10 @@ const GroupChat = () => {
                           : "text-gray-500"
                       }`}
                     >
-                      {
-                        new Date(message.createdAt).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                      {new Date(message.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </p>
                   </div>
                 </div>
@@ -375,6 +563,77 @@ const GroupChat = () => {
               <p className="text-gray-500 text-center">No messages</p>
             )}
             <div ref={messagesEndRef} />
+          </div>
+
+          {/* Cart Sharing Section */}
+          <div className="p-4 border-t border-gray-200 bg-gray-50">
+            <h4 className="font-medium text-sm mb-3">Cart Sharing</h4>
+
+            {/* My Cart Controls */}
+            <div className="mb-4">
+              {!isMyCartShared ? (
+                <button
+                  onClick={handleStartCartSharing}
+                  disabled={!isConnected}
+                  className="w-full px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                >
+                  Share My Cart
+                </button>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-600">
+                    Your cart is being shared ({getTotalItems(myCartItems)}{" "}
+                    items)
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleUpdateSharedCart}
+                      disabled={!isConnected}
+                      className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-xs"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={handleStopCartSharing}
+                      disabled={!isConnected}
+                      className="flex-1 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-xs"
+                    >
+                      Stop
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Shared Carts Display */}
+            <div className="space-y-2">
+              <h5 className="font-medium text-xs text-gray-700">
+                Shared Carts
+              </h5>
+              {Object.keys(sharedCarts).length === 0 ? (
+                <p className="text-xs text-gray-500">
+                  No carts are being shared.
+                </p>
+              ) : (
+                <div className="space-y-2 max-h-32 overflow-y-auto">
+                  {Object.entries(sharedCarts).map(([userId, cart]) => (
+                    <div key={userId} className="p-2 bg-white rounded border">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-medium">
+                          {cart.username}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {getTotalItems(cart.cartItems)} items
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-600">
+                        ${getTotalPrice(cart.cartItems).toFixed(2)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Message Input */}
@@ -389,7 +648,7 @@ const GroupChat = () => {
               />
               <button
                 type="submit"
-                disabled={!newMessage.trim()}
+                disabled={!newMessage.trim() || !isConnected}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <Send className="w-4 h-4" />

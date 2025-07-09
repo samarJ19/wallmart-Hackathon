@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Home, Package, User, Store, Heart, UserPlus } from "lucide-react";
+import { ShoppingCart, Home, User, Store, Heart, UserPlus } from "lucide-react";
 import { useChat } from "@/context/ChatContext";
 
 interface LayoutProps {

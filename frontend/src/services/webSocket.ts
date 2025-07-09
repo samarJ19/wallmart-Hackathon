@@ -1,3 +1,4 @@
+import type { CartItem } from '@/types';
 import { io, Socket } from 'socket.io-client';
 
 interface User {
@@ -28,16 +29,35 @@ interface TypingStatus {
   groupChatId: string;
 }
 
+interface CartShareStarted {
+  userId: string;
+  username: string;
+  cartItems: CartItem[];
+}
+
+interface CartShareStopped {
+  userId: string;
+}
+
+interface CartShareUpdated {
+  userId: string;
+  cartItems: CartItem[];
+}
+
 type MessageHandler = (data: { message: Message; groupChatId: string }) => void;
 type MessagesHandler = (data: { groupChatId: string; messages: Message[] }) => void;
 type UserStatusHandler = (data: UserStatus) => void;
 type TypingHandler = (data: TypingStatus) => void;
 type ErrorHandler = (data: { message: string }) => void;
+type CartShareStartedHandler = (data: CartShareStarted) => void;
+type CartShareStoppedHandler = (data: CartShareStopped) => void;
+type CartShareUpdatedHandler = (data: CartShareUpdated) => void;
 
 class WebSocketService {
   private socket: Socket | null = null;
   private token: string | null = null;
   private isConnected = false;
+  private cartListenersSetup = false; // Add this flag
 
   // Event handlers
   private messageHandlers: MessageHandler[] = [];
@@ -46,6 +66,9 @@ class WebSocketService {
   private typingHandlers: TypingHandler[] = [];
   private stopTypingHandlers: TypingHandler[] = [];
   private errorHandlers: ErrorHandler[] = [];
+  private cartShareStartedHandlers: CartShareStartedHandler[] = [];
+  private cartShareStoppedHandlers: CartShareStoppedHandler[] = [];
+  private cartShareUpdatedHandlers: CartShareUpdatedHandler[] = [];
 
   constructor(serverUrl: string = 'http://localhost:3000') {
     this.serverUrl = serverUrl;
@@ -84,6 +107,7 @@ class WebSocketService {
       this.socket.on('disconnect', () => {
         console.log('Disconnected from WebSocket server');
         this.isConnected = false;
+        this.cartListenersSetup = false; // Reset flag on disconnect
       });
     });
   }
@@ -114,6 +138,33 @@ class WebSocketService {
     this.socket.on('error', (data) => {
       this.errorHandlers.forEach(handler => handler(data));
     });
+
+    // Set up cart sharing event listeners immediately
+    this.setupCartSharingListeners();
+  }
+
+  private setupCartSharingListeners() {
+    if (!this.socket || this.cartListenersSetup) return;
+
+    console.log('Setting up cart sharing listeners');
+
+    // Cart sharing event listeners - DO NOT remove existing listeners
+    this.socket.on('cart-share-started', (data) => {
+      console.log('WebSocket service received cart-share-started:', data);
+      this.cartShareStartedHandlers.forEach(handler => handler(data));
+    });
+
+    this.socket.on('cart-share-stopped', (data) => {
+      console.log('WebSocket service received cart-share-stopped:', data);
+      this.cartShareStoppedHandlers.forEach(handler => handler(data));
+    });
+
+    this.socket.on('cart-share-updated', (data) => {
+      console.log('WebSocket service received cart-share-updated:', data);
+      this.cartShareUpdatedHandlers.forEach(handler => handler(data));
+    });
+
+    this.cartListenersSetup = true; // Mark as set up
   }
 
   // Join a group chat
@@ -148,6 +199,34 @@ class WebSocketService {
   stopTyping(groupChatId: string) {
     if (!this.socket || !this.isConnected) return;
     this.socket.emit('typing_stop', { groupChatId });
+  }
+
+  // Cart sharing methods
+  startCartSharing(groupId: string, cartItems: CartItem[]) {
+    if (!this.socket || !this.isConnected) {
+      console.error('Socket not connected');
+      return;
+    }
+    console.log('Emitting start-cart-sharing event:', { groupId, cartItems });
+    this.socket.emit('start-cart-sharing', { groupId, cartItems });
+  }
+
+  stopCartSharing(groupId: string) {
+    if (!this.socket || !this.isConnected) {
+      console.error('Socket not connected');
+      return;
+    }
+    console.log('Emitting stop-cart-sharing event:', { groupId });
+    this.socket.emit('stop-cart-sharing', { groupId });
+  }
+
+  updateSharedCart(groupId: string, cartItems: CartItem[]) {
+    if (!this.socket || !this.isConnected) {
+      console.error('Socket not connected');
+      return;
+    }
+    console.log('Emitting update-shared-cart event:', { groupId, cartItems });
+    this.socket.emit('update-shared-cart', { groupId, cartItems });
   }
 
   // Event handler registration
@@ -193,9 +272,54 @@ class WebSocketService {
     };
   }
 
+  // Cart sharing event handlers - SIMPLIFIED
+  onCartShareStarted(handler: CartShareStartedHandler) {
+    this.cartShareStartedHandlers.push(handler);
+    
+    // Ensure cart sharing listeners are set up
+    if (this.socket && !this.cartListenersSetup) {
+      this.setupCartSharingListeners();
+    }
+    
+    return () => {
+      this.cartShareStartedHandlers = this.cartShareStartedHandlers.filter(h => h !== handler);
+    };
+  }
+
+  onCartShareStopped(handler: CartShareStoppedHandler) {
+    this.cartShareStoppedHandlers.push(handler);
+    
+    // Ensure cart sharing listeners are set up
+    if (this.socket && !this.cartListenersSetup) {
+      this.setupCartSharingListeners();
+    }
+    
+    return () => {
+      this.cartShareStoppedHandlers = this.cartShareStoppedHandlers.filter(h => h !== handler);
+    };
+  }
+
+  onCartShareUpdated(handler: CartShareUpdatedHandler) {
+    this.cartShareUpdatedHandlers.push(handler);
+    
+    // Ensure cart sharing listeners are set up
+    if (this.socket && !this.cartListenersSetup) {
+      this.setupCartSharingListeners();
+    }
+    
+    return () => {
+      this.cartShareUpdatedHandlers = this.cartShareUpdatedHandlers.filter(h => h !== handler);
+    };
+  }
+
   // Connection status
   getConnectionStatus() {
     return this.isConnected;
+  }
+
+  // Get socket instance (for debugging)
+  getsocket() {
+    return this.socket;
   }
 
   // Disconnect
@@ -204,6 +328,7 @@ class WebSocketService {
       this.socket.disconnect();
       this.socket = null;
       this.isConnected = false;
+      this.cartListenersSetup = false;
     }
   }
 }
