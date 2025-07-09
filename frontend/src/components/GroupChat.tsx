@@ -88,7 +88,6 @@ const GroupChat = () => {
   }>({});
   const [isMyCartShared, setIsMyCartShared] = useState(false);
   const [myCartItems, setMyCartItems] = useState<CartItem[]>([]);
-  const [cartSharingFlag, setCartSharingFlag] = useState(false);
 
 
   useEffect(() => {
@@ -127,7 +126,7 @@ const GroupChat = () => {
   useEffect(() => {
     if (!selectedGroup || !isConnected) return;
 
-
+    console.log("Setting up WebSocket for group:", selectedGroup.id);
 
     webSocketService.joinGroup(selectedGroup.id);
 
@@ -149,11 +148,28 @@ const GroupChat = () => {
     };
   }, [selectedGroup, isConnected]);
 
+  // WebSocket cart sharing listeners - FIXED
+  useEffect(() => {
+    console.log("=== CART SHARING DEBUG ===");
+    console.log("isConnected:", isConnected);
+    console.log("selectedGroup:", selectedGroup?.id);
+    console.log("========================");
+  }, [isConnected, selectedGroup]);
+
   // Modify your cart sharing listeners useEffect to include more debugging
   useEffect(() => {
     if (!isConnected || !selectedGroup) {
+      console.log("❌ WebSocket not connected or no group selected", {
+        isConnected,
+        selectedGroup: selectedGroup?.id,
+      });
       return;
     }
+
+    console.log(
+      "✅ Setting up cart sharing listeners for group:",
+      selectedGroup.id
+    );
 
     // Listen for cart sharing events
     const unsubscribeCartStarted = webSocketService.onCartShareStarted(
@@ -166,6 +182,13 @@ const GroupChat = () => {
         username: string;
         cartItems: any[];
       }) => {
+        console.log("🎯 Cart sharing started received in component:", {
+          userId,
+          username,
+          cartItems,
+        });
+        console.log("🎯 Current sharedCarts before update:", sharedCarts);
+
         setSharedCarts((prev) => {
           const updated = {
             ...prev,
@@ -174,6 +197,7 @@ const GroupChat = () => {
               cartItems,
             },
           };
+          console.log("🎯 Updated shared carts:", updated);
           return updated;
         });
       }
@@ -181,6 +205,7 @@ const GroupChat = () => {
 
     const unsubscribeCartUpdated = webSocketService.onCartShareUpdated(
       (data) => {
+        console.log("🔄 Cart sharing updated received in component:", data);
         setSharedCarts((prev) => {
           const updated = {
             ...prev,
@@ -189,6 +214,7 @@ const GroupChat = () => {
               cartItems: data.cartItems,
             },
           };
+          console.log("🔄 Updated shared carts:", updated);
           return updated;
         });
       }
@@ -196,11 +222,11 @@ const GroupChat = () => {
 
     const unsubscribeCartStopped = webSocketService.onCartShareStopped(
       (data) => {
-
+        console.log("⏹️ Cart sharing stopped received in component:", data);
         setSharedCarts((prev) => {
           const newCarts = { ...prev };
           delete newCarts[data.userId];
-
+          console.log("⏹️ Updated shared carts after removal:", newCarts);
           return newCarts;
         });
       }
@@ -208,35 +234,66 @@ const GroupChat = () => {
 
     // Cleanup function
     return () => {
+      console.log(
+        "🧹 Cleaning up cart sharing listeners for group:",
+        selectedGroup.id
+      );
       unsubscribeCartStarted();
       unsubscribeCartUpdated();
       unsubscribeCartStopped();
     };
-  }, [isConnected, selectedGroup,cartSharingFlag]);
+  }, [isConnected, selectedGroup]);
 
   // Also add this to your handleStartCartSharing function
   const handleStartCartSharing = async () => {
+    console.log("🚀 Starting cart sharing process");
+    console.log("🚀 Selected group:", selectedGroup?.id);
+    console.log("🚀 IsConnected:", isConnected);
 
     if (!selectedGroup) {
+      console.error("❌ No group selected");
       return;
     }
 
     if (!isConnected) {
+      console.error("❌ WebSocket not connected");
       return;
     }
 
     try {
+      console.log("📡 Fetching cart items...");
 
       // Fetch current user's cart
       const cartResponse = await authAPI.get("/api/cart/cartproducts");
       const cartItems = cartResponse.data.cartData;
 
+      console.log("📦 Fetched cart items:", cartItems);
+      console.log("📦 Cart items count:", cartItems.length);
+
+      // Check WebSocket connection status
+      console.log(
+        "🔗 WebSocket connection status:",
+        webSocketService.getConnectionStatus()
+      );
+      console.log("🔗 Socket instance:", webSocketService.getsocket());
+
+      // Emit to WebSocket using the service
+      console.log("📤 Emitting cart sharing event...");
+      webSocketService.startCartSharing(selectedGroup.id, cartItems);
+
       setIsMyCartShared(true);
       setMyCartItems(cartItems);
-      setCartSharingFlag(prev => !prev);
+
+      console.log("✅ Cart sharing started successfully");
     } catch (error) {
+      console.error("❌ Error sharing cart:", error);
     }
   };
+
+  // Debug effect to monitor sharedCarts changes
+  useEffect(() => {
+    console.log("SharedCarts state changed:", sharedCarts);
+  }, [sharedCarts]);
 
   const handleStopCartSharing = () => {
     if (!selectedGroup) {
@@ -249,6 +306,7 @@ const GroupChat = () => {
       return;
     }
 
+    console.log("Stopping cart sharing for group:", selectedGroup.id);
     webSocketService.stopCartSharing(selectedGroup.id);
     setIsMyCartShared(false);
   };
@@ -265,6 +323,7 @@ const GroupChat = () => {
     }
 
     try {
+      console.log("Updating shared cart for group:", selectedGroup.id);
 
       // Fetch updated cart
       const cartResponse = await authAPI.get("/api/cart/cartproducts");
