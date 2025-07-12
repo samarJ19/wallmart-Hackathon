@@ -11,6 +11,8 @@ import { Toaster } from '@/components/ui/sonner'
 import Foryou from './components/Foryou'
 import ProductDetailPage from './pages/ProductDetail'
 import GroupManagementPage from './pages/GroupManagementPage'
+import GroupChat from './components/GroupChat'
+import { AlertContainer } from './components/AlertContainer'
 
 function App() {
   return (
@@ -36,6 +38,9 @@ function App() {
                     <Route path="/product/:productId" element={<ProductDetailPage />} />
                     <Route path="/manageusers" element={<GroupManagementPage />} />
                   </Routes>
+                  <GroupChat/>
+                  <AlertContainer/>
+                  {/*WebChat Component for Chatbot*/}
                 </Layout>
               </SignedIn>
               <SignedOut>

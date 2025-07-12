@@ -174,7 +174,107 @@ router.get("/", requireAuth(), async (req, res) => {
   }
 });
 
-//GET route to get product details given a batch of product Ids
+//GET route to get product details when user is not logged in
+
+router.get("/any/:id", async (req, res) => {
+  try {
+    const { prisma } = req;
+    const { id } = req.params;
+
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: {
+            interactions: true,
+            cartItems: true,
+            orderItems: true,
+          },
+        },
+        interactions: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+          take: 10, // Recent interactions for social proof
+        },
+      },
+    });
+
+    if (!product || !product.isActive) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // Calculate interaction statistics
+    const interactionStats = product.interactions.reduce(
+      (stats, interaction) => {
+        stats[interaction.action] = (stats[interaction.action] || 0) + 1;
+        return stats;
+      },
+      {}
+    );
+
+    // Get similar products (same category, different product)
+    const similarProducts = await prisma.product.findMany({
+      where: {
+        category: product.category,
+        id: { not: id },
+        isActive: true,
+      },
+      take: 6,
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        imageUrl: true,
+        brand: true,
+      },
+    });
+
+    const enhancedProduct = {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      category: product.category,
+      brand: product.brand,
+      imageUrl: product.imageUrl,
+      images: product.images,
+      features: product.features,
+      inventory: product.inventory,
+      has3DModel: product.has3DModel,
+      modelUrl: product.modelUrl,
+      arEnabled: product.arEnabled,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
+      stats: {  //can be used for ml 
+        totalInteractions: product._count.interactions,
+        inCarts: product._count.cartItems,
+        totalOrders: product._count.orderItems,
+        interactionBreakdown: interactionStats,
+      },
+      similarProducts,
+      // Recent interactions for social proof (anonymized)
+      recentActivity: product.interactions.slice(0, 5).map((interaction) => ({
+        action: interaction.action,
+        createdAt: interaction.createdAt,
+        userName: interaction.user.name
+          ? interaction.user.name.charAt(0) + "***"
+          : "Anonymous",
+      })),
+    };
+
+    res.json({ product: enhancedProduct });
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    res.status(500).json({ error: "Failed to fetch product" });
+  }
+});
 
 // GET /api/products/:id - Get single product with detailed info
 router.get("/:id", requireAuth(), async (req, res) => {

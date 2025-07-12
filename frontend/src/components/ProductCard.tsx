@@ -6,26 +6,40 @@ import { ShoppingCart, Check, X, Star } from "lucide-react";
 import { type Product } from "@/types";
 import { useAuthenticatedAPI } from "@/services/api";
 import { Link } from "react-router-dom";
+import { useAlert } from '../context/AlertContext';
+
 interface ProductCardProps {
   product: Product;
   onAddToCart?: (product: Product) => void;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+    const { showAlert } = useAlert();
   const [isHovered, setIsHovered] = useState(false);
   const authApi = useAuthenticatedAPI();
-  //call user interaction with action for all these handlers with action :add to cart, like and dislike
+  //Have to put a check if user is logged in or not !
   const handleAddToCart = async () => {
     try {
-      const res = await authApi.post(`/api/cart/addproduct/${product.id}`,{
+       await authApi.post(`/api/cart/addproduct/${product.id}`,{
         quantity:1
       });
-      const response = await authApi.post("/api/users/interactions", {
+       await authApi.post("/api/users/interactions", {
         productId: product.id,
         action: "cart_add",
         context: "",
       });
+      showAlert({
+        title: "Added to Cart",
+        description: `${product.name} has been added to your cart successfully!`,
+        variant: "default"
+      });
     } catch (err) {
+      showAlert({
+        title: "Error",
+        description: "Failed to add item to cart. Please try again.",
+        variant: "destructive"
+      });
+
       console.log("Error while adding to cart");
     }
     console.log("Add to cart clicked for:", product.name);
@@ -33,12 +47,23 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const handleTickClick = async () => {
     try {
-      const response = await authApi.post("/api/users/interactions", {
+       await authApi.post("/api/users/interactions", {
         productId: product.id,
         action: "tick",
         context: "",
       });
+            showAlert({
+        title: "Liked!",
+        description: `You liked ${product.name}`,
+        variant: "default"
+      });
+
     } catch (err) {
+      showAlert({
+        title: "Error",
+        description: "Failed to record your preference. Please try again.",
+        variant: "destructive"
+      });
       console.log("Error while sending positive interaction");
     }
 
@@ -47,12 +72,22 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const handleCrossClick = async () => {
     try {
-      const response = await authApi.post("/api/users/interactions", {
+       await authApi.post("/api/users/interactions", {
         productId: product.id,
         action: "cross ",
         context: "",
       });
+      showAlert({
+        title: "Disliked",
+        description: `${product.name} has been removed from your preferences`,
+        variant: "default"
+      });
     } catch (err) {
+      showAlert({
+        title: "Error",
+        description: "Failed to record your preference. Please try again.",
+        variant: "destructive"
+      });
       console.log("Error while adding to cart");
     }
     console.log("Cross (remove/dislike) clicked for:", product.name);

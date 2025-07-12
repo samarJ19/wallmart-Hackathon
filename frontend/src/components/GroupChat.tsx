@@ -8,6 +8,7 @@ import {
   UserPlus,
   ChevronLeft,
   MoreVertical,
+  ShoppingCart,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useChat } from "@/context/ChatContext";
@@ -15,6 +16,7 @@ import { useAuthenticatedAPI } from "@/services/api";
 import { useAuth } from "@clerk/clerk-react";
 import webSocketService from "@/services/webSocket";
 import type { CartItem } from "@/types";
+import CartSharingSidebar from "./CartSidebar";
 
 interface Group {
   id: string;
@@ -88,7 +90,7 @@ const GroupChat = () => {
   }>({});
   const [isMyCartShared, setIsMyCartShared] = useState(false);
   const [myCartItems, setMyCartItems] = useState<CartItem[]>([]);
-
+  const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (isChatOpen) {
@@ -283,6 +285,7 @@ const GroupChat = () => {
 
       setIsMyCartShared(true);
       setMyCartItems(cartItems);
+      setIsCartSidebarOpen(true); // Open the sidebar when cart sharing starts
 
       console.log("✅ Cart sharing started successfully");
     } catch (error) {
@@ -308,6 +311,7 @@ const GroupChat = () => {
 
     console.log("Stopping cart sharing for group:", selectedGroup.id);
     webSocketService.stopCartSharing(selectedGroup.id);
+    setSharedCarts({});
     setIsMyCartShared(false);
   };
 
@@ -457,10 +461,25 @@ const GroupChat = () => {
     ).length;
   };
 
+  const handleAddToCart = async (productId: string, quantity: number) => {
+  try {
+    // Replace with your actual API call to add items to cart
+    await authAPI.post("/api/cart/add", {
+      productId,
+      quantity
+    });
+    
+    console.log(`Added ${quantity} of product ${productId} to cart`);
+    // You might want to show a toast notification here
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+  }
+};
+
   if (!isChatOpen) return null;
 
   return (
-    <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl border-l border-gray-200 z-50 flex flex-col">
+    <div className="fixed right-0 top-0 h-full w-100 bg-white shadow-2xl border-l border-gray-200 z-50 flex flex-col">
       {/* Header */}
       <div className="bg-blue-600 text-white p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -625,9 +644,16 @@ const GroupChat = () => {
           </div>
 
           {/* Cart Sharing Section */}
-          <div className="p-4 border-t border-gray-200 bg-gray-50">
+          <div className="p-4 border-t border-gray-200 space-y-2 bg-gray-50">
             <h4 className="font-medium text-sm mb-3">Cart Sharing</h4>
-
+            <button
+              onClick={() => setIsCartSidebarOpen(true)}
+              className="p-2 bg-blue-600 w-full flex justify-center  text-white rounded-lg hover:bg-blue-700 transition-colors"
+              disabled={Object.keys(sharedCarts).length === 0}
+            >
+              <ShoppingCart className="w-4 mx-2 mt-1 h-4" />
+              View Shared Carts ({Object.keys(sharedCarts).length})
+            </button>
             {/* My Cart Controls */}
             <div className="mb-4">
               {!isMyCartShared ? (
@@ -669,29 +695,13 @@ const GroupChat = () => {
               <h5 className="font-medium text-xs text-gray-700">
                 Shared Carts
               </h5>
-              {Object.keys(sharedCarts).length === 0 ? (
-                <p className="text-xs text-gray-500">
-                  No carts are being shared.
-                </p>
-              ) : (
-                <div className="space-y-2 max-h-32 overflow-y-auto">
-                  {Object.entries(sharedCarts).map(([userId, cart]) => (
-                    <div key={userId} className="p-2 bg-white rounded border">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium">
-                          {cart.username}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {getTotalItems(cart.cartItems)} items
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-600">
-                        ${getTotalPrice(cart.cartItems).toFixed(2)}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <CartSharingSidebar
+                isOpen={isCartSidebarOpen}
+                onClose={() => setIsCartSidebarOpen(false)}
+                sharedCarts={sharedCarts}
+                onAddToCart={handleAddToCart}
+
+              />
             </div>
           </div>
 
