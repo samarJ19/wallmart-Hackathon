@@ -16,7 +16,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { type Product } from "@/types";
 import { useAuthenticatedAPI } from "@/services/api";
 import { useParams } from "react-router-dom";
-import GroupChat from "@/components/GroupChat";
 import ProductCard from "@/components/ProductCard";
 
 // Props interface for the component
@@ -36,9 +35,9 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [showFullDescription, setShowFullDescription] = useState(false);
   const { productId } = useParams();
   const authAPI = useAuthenticatedAPI();
+  //When user is not logged hit the endpoint: /api/products/any/productId which returns the same detail about the product
   useEffect(() => {
     if (productId) {
-      // Simulate API call
       const fetchProduct = async () => {
         setLoading(true);
         const productResponse = await authAPI.get(`/api/products/${productId}`);
@@ -60,12 +59,12 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       setQuantity(newQuantity);
     }
   };
-
+// When user is not logged in handleAddToCart should open a dialog box saying that you are not logged in get this feature by logging in 
   const handleAddToCart = async () => {
     if (product) {
       console.log(`Added ${quantity} of ${product.name} to cart`);
       try {
-        const addCartItem = await authAPI.post(
+           await authAPI.post(
           `/api/cart/addproduct/${productId}`,
           {
             quantity: quantity,
@@ -347,7 +346,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </div>
         </div>
       </div>
-      <GroupChat />
     </div>
   );
 };

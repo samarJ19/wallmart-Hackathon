@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
 import { ChatProvider } from "./context/ChatContext.tsx";
+import { AlertProvider } from "./context/AlertContext.tsx";
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -15,6 +16,7 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById("root")!).render(
   <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <AlertProvider>
     <ChatProvider>
       <StrictMode>
         <BrowserRouter>
@@ -22,5 +24,6 @@ createRoot(document.getElementById("root")!).render(
         </BrowserRouter>
       </StrictMode>
     </ChatProvider>
+    </AlertProvider>
   </ClerkProvider>
 );
