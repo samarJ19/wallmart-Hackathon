@@ -91,6 +91,7 @@ const GroupChat = () => {
   const [isMyCartShared, setIsMyCartShared] = useState(false);
   const [myCartItems, setMyCartItems] = useState<CartItem[]>([]);
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
+  const [stableConnection, setStableConnection] = useState(false);
 
   useEffect(() => {
     if (isChatOpen) {
@@ -157,22 +158,27 @@ const GroupChat = () => {
     console.log("selectedGroup:", selectedGroup?.id);
     console.log("========================");
   }, [isConnected, selectedGroup]);
-
+  useEffect(() => {
+    if (isConnected) {
+      const timer = setTimeout(() => setStableConnection(true), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setStableConnection(false);
+    }
+  }, [isConnected]);
   // Modify your cart sharing listeners useEffect to include more debugging
   useEffect(() => {
+    console.log("🔧 CART LISTENERS SETUP/TEARDOWN");
+    console.log("isConnected:", isConnected);
+    console.log("selectedGroup:", selectedGroup?.id);
+    console.log("Timestamp:", new Date().toISOString());
+
     if (!isConnected || !selectedGroup) {
-      console.log("❌ WebSocket not connected or no group selected", {
-        isConnected,
-        selectedGroup: selectedGroup?.id,
-      });
+      console.log("❌ Skipping listener setup");
       return;
     }
 
-    console.log(
-      "✅ Setting up cart sharing listeners for group:",
-      selectedGroup.id
-    );
-
+    console.log("✅ Setting up cart listeners");
     // Listen for cart sharing events
     const unsubscribeCartStarted = webSocketService.onCartShareStarted(
       ({
@@ -244,7 +250,7 @@ const GroupChat = () => {
       unsubscribeCartUpdated();
       unsubscribeCartStopped();
     };
-  }, [isConnected, selectedGroup]);
+  }, [stableConnection, selectedGroup]);
 
   // Also add this to your handleStartCartSharing function
   const handleStartCartSharing = async () => {
@@ -462,19 +468,19 @@ const GroupChat = () => {
   };
 
   const handleAddToCart = async (productId: string, quantity: number) => {
-  try {
-    // Replace with your actual API call to add items to cart
-    await authAPI.post("/api/cart/add", {
-      productId,
-      quantity
-    });
-    
-    console.log(`Added ${quantity} of product ${productId} to cart`);
-    // You might want to show a toast notification here
-  } catch (error) {
-    console.error("Error adding to cart:", error);
-  }
-};
+    try {
+      // Replace with your actual API call to add items to cart
+      await authAPI.post("/api/cart/add", {
+        productId,
+        quantity,
+      });
+
+      console.log(`Added ${quantity} of product ${productId} to cart`);
+      // You might want to show a toast notification here
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   if (!isChatOpen) return null;
 
@@ -700,7 +706,6 @@ const GroupChat = () => {
                 onClose={() => setIsCartSidebarOpen(false)}
                 sharedCarts={sharedCarts}
                 onAddToCart={handleAddToCart}
-
               />
             </div>
           </div>
