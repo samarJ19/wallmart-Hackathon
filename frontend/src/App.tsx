@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react'
 import Layout from './components/Layout'
 import Home from './pages/Home'
@@ -38,6 +38,9 @@ function App() {
                     <Route path="/product/:productId" element={<ProductDetailPage />} />
                     <Route path="/manageusers" element={<GroupManagementPage />} />
                   </Routes>
+                  <a target='_blank' rel='noopener noreferrer' href="https://cdn.botpress.cloud/webchat/v3.0/shareable.html?configUrl=https://files.bpcontent.cloud/2025/07/09/14/20250709144825-NDMVBF9H.json">
+                  <img className='w-[45px] h-[50px] flex fixed bottom-10 left-10 ' src='chatIcon.png'/>
+                  </a>
                   <GroupChat/>
                   <AlertContainer/>
                   {/*WebChat Component for Chatbot*/}

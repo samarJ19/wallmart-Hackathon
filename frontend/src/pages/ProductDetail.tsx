@@ -85,11 +85,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   };
 
   const handleViewInAR = () => {
-    if (product?.arEnabled) {
-      // AR view logic here
-      console.log(`Viewing ${product.name} in AR`);
-      // Launch AR experience
-    }
+    window.open('https://jainamsinghai.8thwall.app/wallmart2/?model=https%3A%2F%2Fraw.githubusercontent.com%2FBlack-Jade0%2Fwallmart%2Fmain%2Fstylized_coffee_shop_sketchfabweeklychallenge.glb', '_blank', 'noopener,noreferrer')
   };
 
   if (loading) {

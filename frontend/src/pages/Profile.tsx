@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { User, MapPin, Package, Settings, Users, ShoppingCart, Heart, Edit3, Mail, Phone, Calendar, Star } from 'lucide-react';
+import {  MapPin, Package,  Users, ShoppingCart, Heart, Edit3, Mail, Phone, Calendar } from 'lucide-react';
 
 // Type definitions
 interface Order {
@@ -40,9 +40,9 @@ const ProfilePage = () => {
   
   // Mock user data based on your schema
   const user: UserProfile = {
-    name: "Keshav Porwal",
-    email: "keshav@example.com",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    name: "Samar Joshi",
+    email: "23bcs060@ietdavv.edu.in",
+    avatar: "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yejE5YzdPSGJFbHNpWXpwTVRObUhFU2lCUTMifQ",
     status: "online",
     lastSeen: "2 hours ago",
     joinedDate: "January 2024",
