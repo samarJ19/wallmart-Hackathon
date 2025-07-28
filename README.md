@@ -54,6 +54,6 @@ npm run dev
 ├── README.md
 🤝 Contributors
 Samar Joshi – Fullstack Developer & AI Integration
-Shravika Jain - AI Integration 
-Jainam Singhai - Fullstack Developer & AI Integration
-Keshav Porwal - Fullstack Developer & AI Integration
+Shravika Jain - AI Systems Engineer 
+Jainam Singhai - Fullstack Developer
+Keshav Porwal - Fullstack Developer 
