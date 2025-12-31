@@ -1,0 +1,73 @@
+const express = require('express');
+const router = express.Router();
+
+// --- Mock Data ---
+const HOMEPAGE_DATA = {
+    hero: {
+        title: "Deals for Days",
+        subtitle: "Save big on top tech, toys, and more.",
+        imageUrl: "/images/banners/hero-main.jpg",
+        ctaText: "Shop all deals",
+        ctaLink: "/deals"
+    },
+    categories: [
+        { id: 1, name: "Grocery", slug: "grocery", img: "/images/cats/grocery.jpg" },
+        { id: 2, name: "Electronics", slug: "electronics", img: "/images/cats/electronics.jpg" },
+        { id: 3, name: "Fashion", slug: "fashion", img: "/images/cats/fashion.jpg" },
+        { id: 4, name: "Home", slug: "home", img: "/images/cats/home.jpg" },
+        { id: 5, name: "Toys", slug: "toys", img: "/images/cats/toys.jpg" },
+        { id: 6, name: "Patio", slug: "patio", img: "/images/cats/patio.jpg" }
+    ],
+    flashDeals: [
+        { id: 101, title: "4K UHD Smart TV", price: 248.00, oldPrice: 350.00, badge: "Rollback" },
+        { id: 102, title: "Noise Cancelling Headphones", price: 59.99, oldPrice: 89.99, badge: "Best Seller" },
+        { id: 103, title: "Air Fryer 6QT", price: 49.00, oldPrice: 79.00, badge: "Save $30" }
+    ]
+};
+
+// --- Routes ---
+
+// GET / - Retrieve all homepage data at once (Performance optimization)
+router.get('/', (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            timestamp: new Date(),
+            data: HOMEPAGE_DATA
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error fetching homepage data" });
+    }
+});
+
+// GET /categories - Retrieve just the department circles
+router.get('/categories', (req, res) => {
+    res.status(200).json(HOMEPAGE_DATA.categories);
+});
+
+// GET /deals - Retrieve just the flash deals (useful for pagination/lazy load)
+router.get('/deals', (req, res) => {
+    res.status(200).json(HOMEPAGE_DATA.flashDeals);
+});
+
+// GET /search - Handle search query redirection or suggestions
+router.get('/search', (req, res) => {
+    const { q } = req.query;
+    
+    if (!q) {
+        return res.status(400).json({ error: "Query parameter 'q' is required" });
+    }
+
+    // Mock search logic
+    const results = HOMEPAGE_DATA.flashDeals.filter(item => 
+        item.title.toLowerCase().includes(q.toLowerCase())
+    );
+
+    res.status(200).json({
+        query: q,
+        count: results.length,
+        results: results
+    });
+});
+
+module.exports = router;
