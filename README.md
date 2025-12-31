@@ -1,34 +1,42 @@
 # 🛒 AI-Integrated E-Commerce Platform
 
-An AI-powered e-commerce website that enhances the online shopping experience with **personalized product recommendations**, **group chat functionality**, and an **AI shopping assistant**.
+Walmart Hackathon Project 🛒⚡
+A high-performance, full-stack replica of the Walmart e-commerce homepage built for the Walmart Hackathon Challenge. This project demonstrates a responsive UI, modular component architecture, and a dedicated backend API for dynamic content delivery.
 
-### 🚀 Live Demo
-🎥 [Watch Demo on YouTube](https://www.youtube.com/watch?v=NHbwSbYcBcU&pp=ygUNa2VzaGF2IHBvcndhbA%3D%3D)
+🔗 Repository: https://github.com/samarJ19/wallmart-Hackathon
 
----
+🚀 Overview
+This application recreates the core shopping experience of Walmart.com, focusing on speed, accessibility, and responsive design. It features a dynamic frontend that fetches real-time deals and category data from a custom Node.js backend.
 
-## ✨ Key Features
+Key Features
+Responsive Header: Fully functional search bar, department navigation, and cart integration.
 
-- 🎯 **Personalized Recommendations**  
-  AI/ML model suggests products based on user behavior and purchase history.
+Dynamic Hero Section: Interactive banner showcasing top deals (e.g., "Deals for Days").
 
-- 💬 **Group Chat for Shopping Together**  
-  Real-time chat feature for collaborative shopping using WebSockets.
+Product Feed: Reusable product cards with "Rollback" badges, ratings, and shipping info.
 
-- 🤖 **AI Chatbot Assistant**  
-  An intelligent chatbot helps users with product queries and navigation.
+Flash Deals: specialized section for time-sensitive offers.
 
----
+Department Browser: Visual grid for navigating categories (Grocery, Electronics, Home, etc.).
 
-## 🧠 Tech Stack
+Backend API: RESTful endpoints serving product and category data.
 
-| Layer       | Technology                                         |
-|-------------|-----------------------------------------------------|
-| Frontend    | Vite + React + TypeScript                          |
-| Backend     | Node.js, PostgreSQL, Prisma ORM, WebSockets        |
-| ML Service  | Python, FastAPI, NumPy (Rule-based recommendation) |
+🛠️ Tech Stack
+Frontend
+Framework: React (v18)
 
----
+Language: TypeScript (.tsx)
+
+Styling: Tailwind CSS
+
+Icons: Lucide React
+
+Backend
+Runtime: Node.js
+
+Framework: Express.js
+
+API: REST (JSON)
 
 ## 🛠️ How to Run the Project
 
