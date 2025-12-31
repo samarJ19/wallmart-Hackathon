@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import {  MapPin, Package,  Users, ShoppingCart, Heart, Edit3, Mail, Phone, Calendar } from 'lucide-react';
 
+// Updated profile page:
 // Type definitions
 interface Order {
   id: string;
