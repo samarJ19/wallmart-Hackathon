@@ -1,0 +1,15 @@
+{
+  "buildCommand": "npm run build",
+  "framework": "vite",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "VITE_CLERK_PUBLISHABLE_KEY": "@vite_clerk_publishable_key",
+    "VITE_BACKEND_URL": "@vite_backend_url"
+  }
+}
