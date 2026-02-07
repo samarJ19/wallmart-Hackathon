@@ -42,9 +42,6 @@ npm run dev
 cd recommend
 pip install fastapi pydantic numpy uvicorn
 python main2.py
-cd recommend
-pip install fastapi pydantic numpy uvicorn
-python main2.py
 cd frontend
 npm install
 npm run dev

@@ -29,10 +29,15 @@ class FeedbackRequest(BaseModel):
 
 # Configuration
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:3000")
+MAX_INIT_RETRIES = 10  # Maximum number of initialization retries
+INIT_RETRY_DELAY = 5  # Initial delay in seconds between retries
+MAX_RETRY_DELAY = 60  # Maximum delay between retries
 
 # Global recommendation system
-recommendation_system = None
+recommendation_system: Optional[SimplifiedRecommendationSystem] = None
 total_recommendations_served = 0
+initialization_task: Optional[asyncio.Task] = None  # Background task for retrying initialization
+is_initializing = False  # Flag to prevent multiple initialization attempts
 
 async def get_http_client():
     """Get HTTP client for backend communication"""
@@ -40,10 +45,17 @@ async def get_http_client():
 
 async def initialize_recommendation_system():
     """Initialize recommendation system with products from backend"""
-    global recommendation_system
+    global recommendation_system, is_initializing
+    
+    if is_initializing:
+        logger.info("Initialization already in progress, skipping...")
+        return False
+    
+    is_initializing = True
     
     try:
-        async with httpx.AsyncClient() as client:
+        logger.info(f"Attempting to connect to backend at {BACKEND_URL}...")
+        async with httpx.AsyncClient(timeout=10.0) as client:
             response = await client.get(f"{BACKEND_URL}/api/products/categories/list")
             response.raise_for_status()
             
@@ -73,15 +85,54 @@ async def initialize_recommendation_system():
             
             if all_products:
                 recommendation_system = SimplifiedRecommendationSystem(all_products)
-                logger.info(f"Initialized recommendation system with {len(all_products)} total products")
+                logger.info(f"✓ Successfully initialized recommendation system with {len(all_products)} total products")
                 
                 # Load all existing interactions to train the system
                 await load_all_interactions()
+                is_initializing = False
+                return True
             else:
                 logger.warning("No products found to initialize recommendation system")
+                is_initializing = False
+                return False
                     
     except Exception as e:
-        logger.error(f"Error initializing recommendation system: {e}")
+        logger.error(f"✗ Failed to initialize recommendation system: {e}")
+        is_initializing = False
+        return False
+
+async def retry_initialization_task():
+    """Background task to retry initialization if it fails"""
+    global recommendation_system
+    
+    retry_count = 0
+    delay = INIT_RETRY_DELAY
+    
+    while recommendation_system is None and retry_count < MAX_INIT_RETRIES:
+        retry_count += 1
+        logger.info(f"Retrying initialization (attempt {retry_count}/{MAX_INIT_RETRIES}) in {delay} seconds...")
+        await asyncio.sleep(delay)
+        
+        success = await initialize_recommendation_system()
+        
+        if success:
+            logger.info("✓ Recommendation system successfully initialized on retry!")
+            return
+        
+        # Exponential backoff with max limit
+        delay = min(delay * 2, MAX_RETRY_DELAY)
+    
+    if recommendation_system is None:
+        logger.error(f"✗ Failed to initialize recommendation system after {MAX_INIT_RETRIES} attempts. Will continue retrying indefinitely...")
+        
+        # Continue retrying indefinitely with max delay
+        while recommendation_system is None:
+            await asyncio.sleep(MAX_RETRY_DELAY)
+            logger.info("Attempting to initialize recommendation system...")
+            success = await initialize_recommendation_system()
+            if success:
+                logger.info("✓ Recommendation system successfully initialized!")
+                return
 
 async def load_all_interactions():
     """Load all user interactions from backend to train the system"""
@@ -89,6 +140,7 @@ async def load_all_interactions():
     
     if not recommendation_system:
         return
+    system = recommendation_system
     
     try:
         async with httpx.AsyncClient() as client:
@@ -110,7 +162,7 @@ async def load_all_interactions():
                     continue
             
             if all_interactions:
-                recommendation_system.update_from_interactions(all_interactions)
+                system.update_from_interactions(all_interactions)
                 logger.info(f"Trained recommendation system with {len(all_interactions)} interactions")
             else:
                 logger.info("No interactions found - system ready for new users")
@@ -145,17 +197,54 @@ async def get_user_interactions(user_id: str) -> List[UserInteraction]:
         logger.error(f"Error getting user interactions: {e}")
         return []
 
+def check_system_initialized() -> None:
+    """Check if recommendation system is initialized and raise appropriate error if not"""
+    global recommendation_system, is_initializing, initialization_task
+    
+    if not recommendation_system:
+        if is_initializing or (initialization_task and not initialization_task.done()):
+            raise HTTPException(
+                status_code=503, 
+                detail="Recommendation system is still initializing. Please wait and try again in a few moments. Check /health endpoint for status."
+            )
+        else:
+            raise HTTPException(
+                status_code=503, 
+                detail="Recommendation system failed to initialize. Backend may be unavailable. Check /health endpoint for details."
+            )
+
+def get_recommendation_system() -> SimplifiedRecommendationSystem:
+    """Return initialized recommendation system or raise an HTTP error."""
+    check_system_initialized()
+    assert recommendation_system is not None
+    return recommendation_system
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize recommendation system on startup and clean up on shutdown."""
+    global initialization_task
+    
     logger.info("Starting up simplified ML service...")
-    await initialize_recommendation_system()
+    
+    # Try to initialize immediately
+    success = await initialize_recommendation_system()
+    
+    if not success:
+        logger.warning("Initial initialization failed. Starting background retry task...")
+        # Start background task to keep retrying
+        initialization_task = asyncio.create_task(retry_initialization_task())
+    
     logger.info("Simplified ML service startup complete")
     yield
-    # Optional: Add shutdown logic here if needed
+    
+    # Cleanup on shutdown
     logger.info("Shutting down simplified ML service...")
-    # Example cleanup:
-    # recommendation_system.shutdown()
+    if initialization_task and not initialization_task.done():
+        initialization_task.cancel()
+        try:
+            await initialization_task
+        except asyncio.CancelledError:
+            pass
 
 # FastAPI app initialization
 app = FastAPI(
@@ -181,12 +270,12 @@ async def root():
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    global recommendation_system, total_recommendations_served
+    global recommendation_system, total_recommendations_served, is_initializing, initialization_task
     
     try:
         # Test backend connection
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"{BACKEND_URL}/health", timeout=5.0)
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(f"{BACKEND_URL}/health")
             backend_status = "healthy" if response.status_code == 200 else "unhealthy"
     except Exception as e:
         backend_status = f"unreachable: {str(e)}"
@@ -197,12 +286,17 @@ async def health_check():
     if system_initialized and recommendation_system is not None:
         stats = recommendation_system.get_system_stats()
     
+    # Check if retry task is running
+    retry_task_running = initialization_task is not None and not initialization_task.done()
+    
     return {
-        "status": "healthy",
+        "status": "healthy" if system_initialized else "initializing",
         "timestamp": datetime.now().isoformat(),
         "backend_connection": backend_status,
         "service": "simplified-ml-service",
         "system_initialized": system_initialized,
+        "is_initializing": is_initializing,
+        "retry_task_active": retry_task_running,
         "total_products": stats.get("total_products", 0),
         "total_users": stats.get("total_users", 0),
         "total_interactions": stats.get("total_interactions", 0),
@@ -243,12 +337,11 @@ async def get_recommendations(
     """
     global recommendation_system, total_recommendations_served
     
-    if not recommendation_system:
-        raise HTTPException(status_code=503, detail="Recommendation system not initialized")
+    system = get_recommendation_system()
     
     try:
         # Get recommendations from simplified system
-        result = recommendation_system.get_recommendations(
+        result = system.get_recommendations(
             user_id=user_id,
             n_products=n_products,
             exclude_products=[],
@@ -306,12 +399,11 @@ async def get_cold_start_recommendations(
     """
     global recommendation_system
     
-    if not recommendation_system:
-        raise HTTPException(status_code=503, detail="Recommendation system not initialized")
+    system = get_recommendation_system()
     
     try:
         # Force new user treatment by passing empty interaction history
-        result = recommendation_system.get_recommendations(
+        result = system.get_recommendations(
             user_id=user_id,
             n_products=n_products,
             exclude_products=[],
@@ -345,8 +437,7 @@ async def record_user_feedback(request: FeedbackRequest):
     print(f"reward: {request.reward}")
     global recommendation_system
     
-    if not recommendation_system:
-        raise HTTPException(status_code=503, detail="Recommendation system not initialized")
+    system = get_recommendation_system()
     
     # Calculate reward if not provided
     if request.reward is None:
@@ -364,7 +455,7 @@ async def record_user_feedback(request: FeedbackRequest):
     
     try:
         # Get product info
-        product = recommendation_system.products.get(request.product_id)
+        product = system.products.get(request.product_id)
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
         
@@ -381,7 +472,7 @@ async def record_user_feedback(request: FeedbackRequest):
         )
         
         # Record the interaction
-        recommendation_system.record_single_interaction(interaction)
+        system.record_single_interaction(interaction)
         
         return {
             "status": "success",
@@ -404,11 +495,10 @@ async def get_system_stats():
     """Get overall system statistics"""
     global recommendation_system, total_recommendations_served
     
-    if not recommendation_system:
-        raise HTTPException(status_code=503, detail="Recommendation system not initialized")
+    system = get_recommendation_system()
     
     try:
-        stats = recommendation_system.get_system_stats()
+        stats = system.get_system_stats()
         stats["total_recommendations_served"] = total_recommendations_served
         stats["timestamp"] = datetime.now().isoformat()
         
@@ -423,11 +513,10 @@ async def get_user_stats(user_id: str):
     """Get statistics for a specific user"""
     global recommendation_system
     
-    if not recommendation_system:
-        raise HTTPException(status_code=503, detail="Recommendation system not initialized")
+    system = get_recommendation_system()
     
     try:
-        user_stats = recommendation_system.get_user_stats(user_id)
+        user_stats = system.get_user_stats(user_id)
         user_stats["timestamp"] = datetime.now().isoformat()
         
         return user_stats
@@ -444,8 +533,7 @@ async def sync_user_data(user_id: str):
     """
     global recommendation_system
     
-    if not recommendation_system:
-        raise HTTPException(status_code=503, detail="Recommendation system not initialized")
+    system = get_recommendation_system()
     
     try:
         # Get latest user interactions from backend
@@ -453,7 +541,7 @@ async def sync_user_data(user_id: str):
         
         if user_interactions:
             # Update system with user's interactions
-            recommendation_system.update_from_interactions(user_interactions)
+            system.update_from_interactions(user_interactions)
             
             return {
                 "status": "success",
@@ -491,15 +579,14 @@ async def list_contexts():
     """Backward compatibility - list available contexts"""
     global recommendation_system
     
-    if not recommendation_system:
-        raise HTTPException(status_code=503, detail="Recommendation system not initialized")
+    system = get_recommendation_system()
     
     try:
-        stats = recommendation_system.get_system_stats()
+        stats = system.get_system_stats()
         
         # Group products by category to show contexts
         category_counts = {}
-        for product_id, product in recommendation_system.products.items():
+        for product_id, product in system.products.items():
             category = product.category
             if category not in category_counts:
                 category_counts[category] = 0
