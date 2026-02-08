@@ -14,7 +14,7 @@ interface Message {
   createdAt: string;
   user: User;
   groupChatId: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 }
 
 interface UserStatus {
@@ -175,7 +175,7 @@ class WebSocketService {
   }
 
   // Send message to group
-  sendMessage(groupChatId: string, content: string, messageType: string = 'text', metadata?: any) {
+  sendMessage(groupChatId: string, content: string, messageType: string = 'text', metadata?: Record<string, unknown>) {
     if (!this.socket || !this.isConnected) {
       console.error('Socket not connected');
       return;

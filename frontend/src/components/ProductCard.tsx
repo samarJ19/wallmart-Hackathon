@@ -33,7 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         description: `${product.name} has been added to your cart successfully!`,
         variant: "default"
       });
-    } catch (err) {
+    } catch {
       showAlert({
         title: "Error",
         description: "Failed to add item to cart. Please try again.",
@@ -58,7 +58,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         variant: "default"
       });
 
-    } catch (err) {
+    } catch {
       showAlert({
         title: "Error",
         description: "Failed to record your preference. Please try again.",
@@ -82,7 +82,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         description: `${product.name} has been removed from your preferences`,
         variant: "default"
       });
-    } catch (err) {
+    } catch {
       showAlert({
         title: "Error",
         description: "Failed to record your preference. Please try again.",

@@ -51,7 +51,7 @@ interface Message {
   createdAt: string;
   user: User;
   groupChatId: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
   isDeleted?: boolean;
 }
 
@@ -134,7 +134,7 @@ const GroupChat = () => {
 
     // Set up message listener
     const unsubscribeMessage = webSocketService.onNewMessage(
-      ({ message }: { message: any }) => {
+      ({ message }: { message: Message }) => {
         console.log("Received new message:", message);
         const formattedMessage: Message = {
           ...message,
@@ -182,7 +182,7 @@ const GroupChat = () => {
       }: {
         userId: string;
         username: string;
-        cartItems: any[];
+        cartItems: CartItem[];
       }) => {
         console.log("🎯 Cart sharing started received in component:", {
           userId,
@@ -396,7 +396,7 @@ const GroupChat = () => {
     const messageData = {
       content: newMessage,
       groupChatId: selectedGroup.id,
-      metadata: new Date().toLocaleTimeString([], {
+      timestamp: new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
       }),
@@ -406,8 +406,7 @@ const GroupChat = () => {
       webSocketService.sendMessage(
         messageData.groupChatId,
         messageData.content,
-        "text",
-        messageData.metadata
+        "text"
       );
       setNewMessage(""); // Clear input after sending
     } catch (error) {

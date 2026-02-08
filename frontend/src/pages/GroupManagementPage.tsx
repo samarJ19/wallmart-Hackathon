@@ -82,7 +82,7 @@ const GroupManagementPage = () => {
       // Replace with your actual API call
       const response = await authAPI.get("/api/groups/admin/my-groups");
       console.log("Group data received: ", response.data.groups);
-      let tempGroup = response.data.groups?.length>0 ? response.data.groups : []
+      const tempGroup = response.data.groups?.length>0 ? response.data.groups : []
       setGroups(tempGroup);
     } catch (error) {
       console.error("Error fetching groups:", error);

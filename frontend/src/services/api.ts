@@ -76,7 +76,7 @@ export interface Product {
   brand: string;
   imageUrl: string;
   images: string[];
-  features: any;
+  features: Record<string, unknown>;
   inventory: number;
   isActive: boolean;
   has3DModel: boolean;
@@ -90,7 +90,7 @@ export interface User {
   email: string;
   name: string;
   avatar?: string;
-  preferences?: any;
+  preferences?: Record<string, unknown>;
 }
 
 export interface CartItem {
@@ -120,13 +120,13 @@ export interface OrderItem {
 }
 
 // Optional: Specific API functions (but much simpler)
-export const createUserAPI = (authAPI: any) => ({
+export const createUserAPI = (authAPI: ReturnType<typeof useAuthenticatedAPI>) => ({
   syncUser: () => authAPI.post('/api/users/sync'),
   getProfile: () => authAPI.get('/api/users/profile'),
   updateProfile: (data: Partial<User>) => authAPI.put('/api/users/profile', data),
 });
 
-export const createProductAPI = (api: any) => ({
+export const createProductAPI = (api: ReturnType<typeof useAuthenticatedAPI>) => ({
   getAll: () => api.get('/api/products'),
   getById: (id: string) => api.get(`/api/products/${id}`),
   getByCategory: (category: string) => api.get(`/api/products/category/${category}`),

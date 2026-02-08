@@ -21,7 +21,7 @@ export interface Product{
   isActive:boolean,
   has3DModel:boolean,
   arEnabled:boolean,
-  similarProducts: Product[]
+  similarProducts?: Product[]
 }
 
 export interface CartItem{

@@ -1,14 +1,20 @@
 import { useAuthenticatedAPI } from "@/services/api";
 import { useCallback, useEffect, useState } from "react";
+import { type Product } from "@/types";
+
+interface ApiResponse {
+  products?: Product[];
+  data?: Product[];
+}
 
 export const useRecommendation = () => {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const authAPI = useAuthenticatedAPI();
 
   // Helper function to extract products from response
-  const extractProducts = (responseData: any) => {
+  const extractProducts = (responseData: ApiResponse | Product[]) => {
     console.log("📦 Raw API response:", responseData);
     
     // Handle different possible response structures
