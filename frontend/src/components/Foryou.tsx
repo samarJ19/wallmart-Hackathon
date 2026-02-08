@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import ProductCard from "./ProductCard";
-import { type Product } from "@/types";
 import { useMemo, useState } from "react";
 
 // Shimmer Loading Skeleton Component

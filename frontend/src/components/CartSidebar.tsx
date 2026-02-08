@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, X, Plus, Minus, User } from 'lucide-react';
+import { ShoppingCart, X, Plus, User } from 'lucide-react';
 
 // Types (you already have these)
 interface Product {

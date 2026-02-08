@@ -55,7 +55,6 @@ type CartShareUpdatedHandler = (data: CartShareUpdated) => void;
 
 class WebSocketService {
   private socket: Socket | null = null;
-  private token: string | null = null;
   private isConnected = false;
   private cartListenersSetup = false; // Add this flag
 
@@ -84,7 +83,6 @@ class WebSocketService {
         return;
       }
 
-      this.token = authToken;
       this.socket = io(this.serverUrl, {
         auth: {
           token: authToken

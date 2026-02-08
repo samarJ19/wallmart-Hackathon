@@ -351,14 +351,6 @@ const GroupChat = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
-  // Helper function to get total price of a cart
-  const getTotalPrice = (cartItems: CartItem[]) => {
-    return cartItems.reduce(
-      (total, item) => total + item.product.price * item.quantity,
-      0
-    );
-  };
-
   const fetchGroups = async () => {
     try {
       setLoading(true);
