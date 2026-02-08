@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import httpx
 import os
+import sys
+import uvicorn
 from datetime import datetime
 import json
 from typing import List, Dict, Any, Optional
@@ -19,7 +21,16 @@ from models.simplified import (
 )
 
 # Set up logging
-logging.basicConfig(level=logging.INFO)
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO" if ENVIRONMENT == "production" else "DEBUG")
+
+logging.basicConfig(
+    level=getattr(logging, LOG_LEVEL),
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 logger = logging.getLogger(__name__)
 class FeedbackRequest(BaseModel):
     user_id: str
@@ -29,9 +40,12 @@ class FeedbackRequest(BaseModel):
 
 # Configuration
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:3000")
-MAX_INIT_RETRIES = 10  # Maximum number of initialization retries
-INIT_RETRY_DELAY = 5  # Initial delay in seconds between retries
-MAX_RETRY_DELAY = 60  # Maximum delay between retries
+MAX_INIT_RETRIES = int(os.getenv("MAX_INIT_RETRIES", "10"))  # Maximum number of initialization retries
+INIT_RETRY_DELAY = int(os.getenv("INIT_RETRY_DELAY", "5"))  # Initial delay in seconds between retries
+MAX_RETRY_DELAY = int(os.getenv("MAX_RETRY_DELAY", "60"))  # Maximum delay between retries
+
+# CORS Configuration
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",") if ENVIRONMENT == "production" else ["*"]
 
 # Global recommendation system
 recommendation_system: Optional[SimplifiedRecommendationSystem] = None
@@ -256,7 +270,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure this properly for production
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -265,7 +279,11 @@ app.add_middleware(
 @app.get("/")
 async def root():
     """Root endpoint"""
-    return {"message": "Walmart Hackathon Simplified ML Service is running!"}
+    return {
+        "message": "Walmart Hackathon Simplified ML Service is running!",
+        "version": "2.0.0",
+        "environment": ENVIRONMENT
+    }
 
 @app.get("/health")
 async def health_check():
@@ -615,5 +633,18 @@ async def list_contexts():
         raise HTTPException(status_code=500, detail="Failed to list contexts")
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="localhost", port=8000)
+    # Get configuration from environment
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "8000"))
+    reload = ENVIRONMENT != "production"
+    
+    logger.info(f"Starting server on {host}:{port} (environment: {ENVIRONMENT})")
+    
+    uvicorn.run(
+        "main2:app",
+        host=host,
+        port=port,
+        reload=reload,
+        log_level=LOG_LEVEL.lower(),
+        access_log=True
+    )
