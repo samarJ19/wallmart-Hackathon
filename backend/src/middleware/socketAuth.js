@@ -1,5 +1,6 @@
 const { verifyToken } = require('@clerk/backend');
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../config/prisma');
+const logger = require('../utils/logger');
 
 // Socket.IO Authentication Middleware using @clerk/backend
 const socketAuth = async (socket, next) => {
@@ -8,7 +9,6 @@ const socketAuth = async (socket, next) => {
     if (!token) {
       return next(new Error('Authentication token required'));
     }
-    const prisma = new PrismaClient();
     // Verify the session token using Clerk's backend SDK
     const sessionClaims = await verifyToken(token, {
       secretKey: process.env.CLERK_SECRET_KEY,
@@ -54,7 +54,7 @@ const socketAuth = async (socket, next) => {
     
     next();
   } catch (error) {
-    console.error('Socket authentication error:', error);
+    logger.error('Socket authentication error', error);
     next(new Error('Authentication failed'));
   }
 };

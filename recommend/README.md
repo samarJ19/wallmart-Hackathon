@@ -1,52 +1,76 @@
-# ML Recommendation Service
+# ML Recommendation Service (v2.0)
 
-A FastAPI-based machine learning service for personalized product recommendations using contextual bandits and user feedback learning.
+A refactored FastAPI-based machine learning service for personalized product recommendations. Built with clean architecture, modular design, and comprehensive cold-start handling.
 
-## Quick Start
+## ✨ Features
 
-### Development
+- **Adaptive Recommendations**: Learns from user interactions in real-time
+- **Cold Start Handling**: Smart recommendations for new users using content-based scoring
+- **Hybrid Strategy**: Combines multiple recommendation approaches for optimal results
+- **Category Filtering**: Get recommendations for specific product categories
+- **Feedback Learning**: Improves recommendations based on user feedback (tick/cross)
+- **Graceful Initialization**: Automatic retry with exponential backoff if backend unavailable
+- **Health Monitoring**: Comprehensive health check endpoint with service status
 
-1. **Install dependencies:**
-```bash
-pip install -r requirements.txt
+## 🏗️ New Architecture (v2.0)
+
+Completely refactored with clean, modular design:
+
+```
+app/
+├── main.py                  # FastAPI application
+├── config.py               # Configuration
+├── models/                 # Data structures & validation
+├── services/               # Core business logic
+├── routes/                 # API endpoints
+└── utils/                  # Utilities & helpers
 ```
 
-2. **Create environment file:**
-```bash
-cp .env.example .env
-# Edit .env with your settings
-```
+## 🚀 Quick Start
 
-3. **Run the development server:**
 ```bash
+cd recommend
+pip install -r app/requirements.txt
 cd app
-python main2.py
+python main.py
 ```
 
-The service will be available at `http://localhost:8000`
+Service available at `http://localhost:8000`
 
-### API Documentation
+## 📚 API Documentation
 
-Once running, visit:
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
 
-## Key Endpoints
+## 🔑 Key Endpoints
 
-- `GET /` - Service info
-- `GET /health` - Health check and system status
-- `GET /recommend/{user_id}` - Get personalized recommendations
-- `POST /feedback/record` - Record user feedback (tick/cross)
-- `GET /stats/system` - System statistics
-- `GET /stats/user/{user_id}` - User-specific statistics
+- `GET /api/recommend/{user_id}` - Get recommendations
+- `POST /api/feedback` - Record user feedback
+- `GET /api/health` - Health check
+- `GET /api/stats` - Statistics
 
-## Production Deployment
+## 🧠 Recommendation Strategies
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for comprehensive deployment instructions including:
-- Environment configuration
-- Docker deployment
-- Cloud platform deployments (Render, Railway, Heroku, GCP, AWS)
-- Production best practices
+1. **Cold Start (0 interactions)**: Trending products
+2. **Hybrid (1-4 interactions)**: Mix popular + personalized
+3. **Personalized (5+ interactions)**: Full personalization with exploration
+
+## ✅ Improvements in v2.0
+
+- Removed 40KB of unused complexity (bandit.py)
+- Clean modular architecture
+- Better cold start handling
+- Improved maintainability and extensibility
+- Performance optimized with caching
+
+## 🐳 Deployment
+
+```bash
+docker build -t recommendation-service .
+docker run -p 8000:8000 -e BACKEND_URL=https://your-backend.com recommendation-service
+```
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 
 ### Quick Production Start
 

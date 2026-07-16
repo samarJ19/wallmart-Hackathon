@@ -7,6 +7,7 @@ import { type Product } from "@/types";
 import { useAuthenticatedAPI } from "@/services/api";
 import { Link } from "react-router-dom";
 import { useAlert } from '../context/AlertContext';
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 
 interface ProductCardProps {
   product: Product;
@@ -17,8 +18,9 @@ export default function ProductCard({ product }: ProductCardProps) {
     const { showAlert } = useAlert();
   const [isHovered, setIsHovered] = useState(false);
   const authApi = useAuthenticatedAPI();
-  //Have to put a check if user is logged in or not !
-  const handleAddToCart = async () => {
+  const { requireAuth } = useAuthGuard();
+
+  const handleAddToCart = requireAuth(async () => {
     try {
        await authApi.post(`/api/cart/addproduct/${product.id}`,{
         quantity:1
@@ -43,16 +45,16 @@ export default function ProductCard({ product }: ProductCardProps) {
       console.log("Error while adding to cart");
     }
     console.log("Add to cart clicked for:", product.name);
-  };
+  });
 
-  const handleTickClick = async () => {
+  const handleTickClick = requireAuth(async () => {
     try {
        await authApi.post("/api/users/interactions", {
         productId: product.id,
         action: "tick",
         context: "",
       });
-            showAlert({
+             showAlert({
         title: "Liked!",
         description: `You liked ${product.name}`,
         variant: "default"
@@ -68,9 +70,9 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
 
     console.log("Tick (like/favorite) clicked for:", product.name);
-  };
+  });
 
-  const handleCrossClick = async () => {
+  const handleCrossClick = requireAuth(async () => {
     try {
        await authApi.post("/api/users/interactions", {
         productId: product.id,
@@ -91,7 +93,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       console.log("Error while adding to cart");
     }
     console.log("Cross (remove/dislike) clicked for:", product.name);
-  };
+  });
 
   return (
     <Card

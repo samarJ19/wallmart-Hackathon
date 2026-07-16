@@ -17,6 +17,7 @@ import { type Product } from "@/types";
 import { useAuthenticatedAPI } from "@/services/api";
 import { useParams } from "react-router-dom";
 import ProductCard from "@/components/ProductCard";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 
 // Props interface for the component
 interface ProductDetailPageProps {
@@ -35,6 +36,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [showFullDescription, setShowFullDescription] = useState(false);
   const { productId } = useParams();
   const authAPI = useAuthenticatedAPI();
+  const { requireAuth } = useAuthGuard();
   //When user is not logged hit the endpoint: /api/products/any/productId which returns the same detail about the product
   useEffect(() => {
     if (productId) {
@@ -59,8 +61,8 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       setQuantity(newQuantity);
     }
   };
-// When user is not logged in handleAddToCart should open a dialog box saying that you are not logged in get this feature by logging in 
-  const handleAddToCart = async () => {
+
+  const handleAddToCart = requireAuth(async () => {
     if (product) {
       console.log(`Added ${quantity} of ${product.name} to cart`);
       try {
@@ -74,19 +76,21 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         console.log("Frontend: Got error while adding product to cart ", err);
       }
     }
-  };
+  });
 
-  const handleBuyNow = () => {
+  const handleBuyNow = requireAuth(() => {
     if (product) {
-      // Direct purchase logic here
       console.log(`Buying ${quantity} of ${product.name}`);
-      // Redirect to checkout or handle purchase
     }
-  };
+  });
 
-  const handleViewInAR = () => {
+  const handleWishlistToggle = requireAuth(() => {
+    setIsWishlisted(!isWishlisted);
+  });
+
+  const handleViewInAR = requireAuth(() => {
     window.open('https://jainamsinghai.8thwall.app/wallmart2/?model=https%3A%2F%2Fraw.githubusercontent.com%2FBlack-Jade0%2Fwallmart%2Fmain%2Fstylized_coffee_shop_sketchfabweeklychallenge.glb', '_blank', 'noopener,noreferrer')
-  };
+  });
 
   if (loading) {
     return (
@@ -281,7 +285,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
                 <div className="grid grid-cols-2 gap-4">
                   <button
-                    onClick={() => setIsWishlisted(!isWishlisted)}
+                    onClick={handleWishlistToggle}
                     className={`flex items-center justify-center gap-2 px-6 py-3 border rounded-lg transition-colors ${
                       isWishlisted
                         ? "border-red-300 text-red-600 bg-red-50"

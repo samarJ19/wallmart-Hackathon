@@ -1,114 +1,53 @@
 const express = require("express");
 const router = express.Router();
 const { getAuth, requireAuth } = require("@clerk/express");
+const { asyncHandler } = require("../utils/helpers");
+const { validateQuery, validateParams, validationRules } = require("../middleware/validation");
+const logger = require("../utils/logger");
 
-router.get("/genproducts", async (req,res)=>{
-  try{
-    const { prisma } = req;
-    const products = await prisma.product.findMany();
-    res.json({Message:"Data fetch complete !",products:products});
-  }catch(err){
-    res.status(403).json({errorMessage:"Got error while getting products from database",err})
-  }
-})
+// GET /api/products - Get all products
+router.get(
+  "/",
+  requireAuth(),
+  validateQuery({
+    page: validationRules.page,
+    limit: validationRules.limit,
+  }),
+  asyncHandler(async (req, res) => {
+    const { page = 1, limit = 20, category, brand, minPrice, maxPrice, search, sortBy, sortOrder, arEnabled, inStock } = {
+      ...req.query,
+      ...req.validatedQuery,
+    };
 
-// GET /api/products - Get all products with filtering and pagination
-router.get("/", requireAuth(), async (req, res) => {
-  try {
-    const { userId } = getAuth(req);
-    const { prisma } = req;
-    const {
-      page = 1,
-      limit = 20,
+    const result = await req.services.product.getAllProducts({
+      page,
+      limit,
       category,
       brand,
       minPrice,
       maxPrice,
       search,
-      sortBy = "createdAt",
-      sortOrder = "desc",
+      sortBy,
+      sortOrder,
       arEnabled,
       inStock,
-    } = req.query;
+    });
 
-    // Build where clause
-    const where = {
-      isActive: true,
-      ...(category && { category }),
-      ...(brand && { brand }),
-      ...(minPrice && { price: { gte: parseFloat(minPrice) } }),
-      ...(maxPrice && {
-        price: {
-          ...(minPrice ? { gte: parseFloat(minPrice) } : {}),
-          lte: parseFloat(maxPrice),
-        },
-      }),
-      ...(search && {
-        OR: [
-          { name: { contains: search, mode: "insensitive" } },
-          { description: { contains: search, mode: "insensitive" } },
-          { brand: { contains: search, mode: "insensitive" } },
-        ],
-      }),
-      ...(arEnabled === "true" && { arEnabled: true }),
-      ...(inStock === "true" && { inventory: { gt: 0 } }),
-    };
-
-    // Build orderBy clause
-    let orderBy = {};
-    if (sortBy === "price") {
-      orderBy.price = sortOrder;
-    } else if (sortBy === "name") {
-      orderBy.name = sortOrder;
-    } else if (sortBy === "popularity") {
-      // For popularity sorting, we'll count interactions
-      // In production, you'd want to cache this data
-      orderBy.createdAt = "desc"; // Fallback to newest first
-    } else {
-      orderBy.createdAt = sortOrder;
-    }
-
-    const skip = (parseInt(page) - 1) * parseInt(limit);
-    const take = parseInt(limit);
-
-    // Get products with interaction counts
-    const [products, totalCount] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        orderBy,
-        skip,
-        take,
-        include: {
-          _count: {
-            select: {
-              interactions: true,
-              cartItems: true,
-              orderItems: true,
-            },
-          },
-        },
-      }),
-      prisma.product.count({ where }),
-    ]);
-
-    // If user is authenticated, get their interaction history for these products, but doesn't it reduces the scope of new products ? if authenticated users are going to see less number of product then how is it going to increase sales or personalization
-    let userInteractions = {};
+    const { userId } = getAuth(req);
     if (userId) {
-      const user = await prisma.user.findUnique({
+      const user = await req.prisma.user.findUnique({
         where: { clerkId: userId },
       });
 
       if (user) {
-        const interactions = await prisma.userInteraction.findMany({
+        const interactions = await req.prisma.userInteraction.findMany({
           where: {
             userId: user.id,
-            productId: { in: products.map((p) => p.id) },
+            productId: { in: result.products.map((p) => p.id) },
           },
-          orderBy: { createdAt: "desc" },
         });
 
-        // Group interactions by product ID
-        userInteractions = interactions.reduce((acc, interaction) => {
+        const userInteractions = interactions.reduce((acc, interaction) => {
           if (!acc[interaction.productId]) {
             acc[interaction.productId] = [];
           }
@@ -119,218 +58,95 @@ router.get("/", requireAuth(), async (req, res) => {
           });
           return acc;
         }, {});
+
+        result.products = result.products.map((p) => ({
+          ...p,
+          userInteractions: userInteractions[p.id] || [],
+        }));
       }
     }
 
-    // Enhance products with user interaction data
-    const enhancedProducts = products.map((product) => ({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      category: product.category,
-      brand: product.brand,
-      imageUrl: product.imageUrl,
-      images: product.images,
-      inventory: product.inventory,
-      has3DModel: product.has3DModel,
-      modelUrl: product.modelUrl,
-      arEnabled: product.arEnabled,
-      createdAt: product.createdAt,
-      // ML-relevant metrics
-      stats: {
-        totalInteractions: product._count.interactions,
-        inCarts: product._count.cartItems,
-        totalOrders: product._count.orderItems,
-      },
-      // User-specific data (if authenticated)
-      userInteractions: userInteractions[product.id] || [],
-    }));
+    res.json(result);
+  })
+);
 
-    const totalPages = Math.ceil(totalCount / parseInt(limit));
+// GET /api/products/any/:id - Get product (no auth required)
+router.get(
+  "/any/:id",
+  validateParams({ id: validationRules.productId }),
+  asyncHandler(async (req, res) => {
+    const { id } = req.validatedParams;
+    const product = await req.services.product.getProduct(id);
+
+    const similarProducts = await req.services.product.getSimilarProducts(id);
+
+    const interactionStats = product.interactions.reduce(
+      (stats, interaction) => {
+        stats[interaction.action] = (stats[interaction.action] || 0) + 1;
+        return stats;
+      },
+      {}
+    );
 
     res.json({
-      products: enhancedProducts,
-      pagination: {
-        currentPage: parseInt(page),
-        totalPages,
-        totalCount,
-        hasNext: parseInt(page) < totalPages,
-        hasPrev: parseInt(page) > 1,
-      },
-      filters: {
-        category,
-        brand,
-        minPrice,
-        maxPrice,
-        search,
-        sortBy,
-        sortOrder,
-      },
-    });
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    res.status(500).json({ error: "Failed to fetch products" });
-  }
-});
-
-//GET route to get product details when user is not logged in
-
-router.get("/any/:id", async (req, res) => {
-  try {
-    const { prisma } = req;
-    const { id } = req.params;
-
-    const product = await prisma.product.findUnique({
-      where: { id },
-      include: {
-        _count: {
-          select: {
-            interactions: true,
-            cartItems: true,
-            orderItems: true,
-          },
-        },
-        interactions: {
-          include: {
-            user: {
-              select: {
-                name: true,
-                avatar: true,
-              },
-            },
-          },
-          orderBy: { createdAt: "desc" },
-          take: 10, // Recent interactions for social proof
-        },
-      },
-    });
-
-    if (!product || !product.isActive) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    // Calculate interaction statistics
-    const interactionStats = product.interactions.reduce(
-      (stats, interaction) => {
-        stats[interaction.action] = (stats[interaction.action] || 0) + 1;
-        return stats;
-      },
-      {}
-    );
-
-    // Get similar products (same category, different product)
-    const similarProducts = await prisma.product.findMany({
-      where: {
+      product: {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
         category: product.category,
-        id: { not: id },
-        isActive: true,
-      },
-      take: 6,
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        imageUrl: true,
-        brand: true,
+        brand: product.brand,
+        imageUrl: product.imageUrl,
+        images: product.images,
+        features: product.features,
+        inventory: product.inventory,
+        has3DModel: product.has3DModel,
+        modelUrl: product.modelUrl,
+        arEnabled: product.arEnabled,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+        stats: {
+          totalInteractions: product._count.interactions,
+          inCarts: product._count.cartItems,
+          totalOrders: product._count.orderItems,
+          interactionBreakdown: interactionStats,
+        },
+        similarProducts,
+        recentActivity: product.interactions.slice(0, 5).map((interaction) => ({
+          action: interaction.action,
+          createdAt: interaction.createdAt,
+          userName: interaction.user.name ? interaction.user.name.charAt(0) + "***" : "Anonymous",
+        })),
       },
     });
+  })
+);
 
-    const enhancedProduct = {
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      category: product.category,
-      brand: product.brand,
-      imageUrl: product.imageUrl,
-      images: product.images,
-      features: product.features,
-      inventory: product.inventory,
-      has3DModel: product.has3DModel,
-      modelUrl: product.modelUrl,
-      arEnabled: product.arEnabled,
-      createdAt: product.createdAt,
-      updatedAt: product.updatedAt,
-      stats: {  //can be used for ml 
-        totalInteractions: product._count.interactions,
-        inCarts: product._count.cartItems,
-        totalOrders: product._count.orderItems,
-        interactionBreakdown: interactionStats,
-      },
-      similarProducts,
-      // Recent interactions for social proof (anonymized)
-      recentActivity: product.interactions.slice(0, 5).map((interaction) => ({
-        action: interaction.action,
-        createdAt: interaction.createdAt,
-        userName: interaction.user.name
-          ? interaction.user.name.charAt(0) + "***"
-          : "Anonymous",
-      })),
-    };
-
-    res.json({ product: enhancedProduct });
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    res.status(500).json({ error: "Failed to fetch product" });
-  }
-});
-
-// GET /api/products/:id - Get single product with detailed info
-router.get("/:id", requireAuth(), async (req, res) => {
-  try {
-    const { prisma } = req;
-    const { id } = req.params;
+// GET /api/products/:id - Get product (auth required)
+router.get(
+  "/:id",
+  requireAuth(),
+  validateParams({ id: validationRules.productId }),
+  asyncHandler(async (req, res) => {
+    const { id } = req.validatedParams;
     const { userId } = getAuth(req);
 
-    const product = await prisma.product.findUnique({
-      where: { id },
-      include: {
-        _count: {
-          select: {
-            interactions: true,
-            cartItems: true,
-            orderItems: true,
-          },
-        },
-        interactions: {
-          include: {
-            user: {
-              select: {
-                name: true,
-                avatar: true,
-              },
-            },
-          },
-          orderBy: { createdAt: "desc" },
-          take: 10, // Recent interactions for social proof
-        },
-      },
-    });
+    const product = await req.services.product.getProduct(id);
 
-    if (!product || !product.isActive) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    // If user is authenticated, get their specific interactions with this product
     let userInteractions = [];
-    if (userId) {
-      const user = await prisma.user.findUnique({
-        where: { clerkId: userId },
-      });
+    const user = await req.prisma.user.findUnique({
+      where: { clerkId: userId },
+    });
 
-      if (user) {
-        userInteractions = await prisma.userInteraction.findMany({
-          where: {
-            userId: user.id,
-            productId: id,
-          },
-          orderBy: { createdAt: "desc" },
-        });
-      }
+    if (user) {
+      userInteractions = await req.prisma.userInteraction.findMany({
+        where: { userId: user.id, productId: id },
+        orderBy: { createdAt: "desc" },
+      });
     }
 
-    // Calculate interaction statistics
+    const similarProducts = await req.services.product.getSimilarProducts(id);
+
     const interactionStats = product.interactions.reduce(
       (stats, interaction) => {
         stats[interaction.action] = (stats[interaction.action] || 0) + 1;
@@ -339,294 +155,108 @@ router.get("/:id", requireAuth(), async (req, res) => {
       {}
     );
 
-    // Get similar products (same category, different product)
-    const similarProducts = await prisma.product.findMany({
-      where: {
+    res.json({
+      product: {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
         category: product.category,
-        id: { not: id },
-        isActive: true,
-      },
-      take: 6,
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        imageUrl: true,
-        brand: true,
-      },
-    });
-
-    const enhancedProduct = {
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      category: product.category,
-      brand: product.brand,
-      imageUrl: product.imageUrl,
-      images: product.images,
-      features: product.features,
-      inventory: product.inventory,
-      has3DModel: product.has3DModel,
-      modelUrl: product.modelUrl,
-      arEnabled: product.arEnabled,
-      createdAt: product.createdAt,
-      updatedAt: product.updatedAt,
-      stats: {  //can be used for ml 
-        totalInteractions: product._count.interactions,
-        inCarts: product._count.cartItems,
-        totalOrders: product._count.orderItems,
-        interactionBreakdown: interactionStats,
-      },
-      userInteractions,
-      similarProducts,
-      // Recent interactions for social proof (anonymized)
-      recentActivity: product.interactions.slice(0, 5).map((interaction) => ({
-        action: interaction.action,
-        createdAt: interaction.createdAt,
-        userName: interaction.user.name
-          ? interaction.user.name.charAt(0) + "***"
-          : "Anonymous",
-      })),
-    };
-
-    res.json({ product: enhancedProduct });
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    res.status(500).json({ error: "Failed to fetch product" });
-  }
-});
-
-// GET /api/products/categories/list - Get all unique categories
-router.get("/categories/list", async (req, res) => {
-  try {
-    const { prisma } = req;
-
-    // Get all active products with full details grouped by category
-    const products = await prisma.product.findMany({
-      where: { isActive: true },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        imageUrl: true,
-        category: true,
-        features: true,
-        createdAt: true
-        // Add any other product fields you need
-      },
-      orderBy: {
-        createdAt: 'desc', // Order products by creation date
-      },
-    });
-
-    // Group products by category
-    const categoryMap = products.reduce((acc, product) => {
-      const categoryName = product.category;
-      
-      if (!acc[categoryName]) {
-        acc[categoryName] = {
-          name: categoryName,
-          products: [],
-          count: 0,
-        };
-      }
-      
-      acc[categoryName].products.push(product);
-      acc[categoryName].count++;
-      return acc;
-    }, {});
-
-    // Convert to array and sort by count (descending)
-    const categoryList = Object.values(categoryMap).sort(
-      (a, b) => b.count - a.count
-    );
-
-    res.json({ 
-      categories: categoryList,
-      totalCategories: categoryList.length,
-      totalProducts: products.length
-    });
-  } catch (error) {
-    console.error("Error fetching categories with products:", error);
-    res.status(500).json({ error: "Failed to fetch categories with products" });
-  }
-});
-
-// GET /api/products/brands/list - Get all unique brands
-router.get("/brands/list", async (req, res) => {
-  try {
-    const { prisma } = req;
-
-    const brands = await prisma.product.groupBy({
-      by: ["brand"],
-      where: { isActive: true },
-      _count: {
-        brand: true,
-      },
-      orderBy: {
-        _count: {
-          brand: "desc",
+        brand: product.brand,
+        imageUrl: product.imageUrl,
+        images: product.images,
+        features: product.features,
+        inventory: product.inventory,
+        has3DModel: product.has3DModel,
+        modelUrl: product.modelUrl,
+        arEnabled: product.arEnabled,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+        stats: {
+          totalInteractions: product._count.interactions,
+          inCarts: product._count.cartItems,
+          totalOrders: product._count.orderItems,
+          interactionBreakdown: interactionStats,
         },
+        userInteractions,
+        similarProducts,
+        recentActivity: product.interactions.slice(0, 5).map((interaction) => ({
+          action: interaction.action,
+          createdAt: interaction.createdAt,
+          userName: interaction.user.name ? interaction.user.name.charAt(0) + "***" : "Anonymous",
+        })),
       },
     });
+  })
+);
 
-    const brandList = brands.map((brand) => ({
-      name: brand.brand,
-      count: brand._count.brand,
-    }));
+// GET /api/products/categories/list - Get categories
+router.get(
+  "/categories/list",
+  asyncHandler(async (req, res) => {
+    const result = await req.services.product.getCategories();
+    res.json(result);
+  })
+);
 
-    res.json({ brands: brandList });
-  } catch (error) {
-    console.error("Error fetching brands:", error);
-    res.status(500).json({ error: "Failed to fetch brands" });
-  }
-});
+// GET /api/products/brands/list - Get brands
+router.get(
+  "/brands/list",
+  asyncHandler(async (req, res) => {
+    const brands = await req.services.product.getBrands();
+    res.json({ brands });
+  })
+);
 
-// POST /api/products/:id/view - Track product view (for ML)
-router.post("/:id/view", requireAuth(), async (req, res) => {
-  try {
-    const { prisma } = req;
-    const { id } = req.params;
-    const { context } = req.body;
+// POST /api/products/:id/view - Track view
+router.post(
+  "/:id/view",
+  requireAuth(),
+  validateParams({ id: validationRules.productId }),
+  asyncHandler(async (req, res) => {
+    const { id } = req.validatedParams;
     const { userId } = getAuth(req);
-    // Check if product exists
-    const product = await prisma.product.findUnique({
-      where: { id },
+    const { context } = req.body;
+
+    await req.services.product.recordView(id);
+
+    const user = await req.prisma.user.findUnique({
+      where: { clerkId: userId },
     });
 
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
+    if (user) {
+      await req.services.user.trackInteraction(userId, id, "view", context);
 
-    
-    if (userId) {
-      const user = await prisma.user.findUnique({
-        where: { clerkId: userId },
+      req.services.recommendation.recordFeedback(user.id, id, "view", 0.1).catch(err => {
+        logger.warn('Failed to record feedback to ML service', err);
       });
-
-      if (user) {
-        const interaction = await prisma.userInteraction.create({
-          data: {
-            userId: user.id,
-            productId: id,
-            action: "view",
-            reward: 0.1,
-            context: context || {},
-          },
-        });
-      }
     }
 
     res.json({ success: true });
-  } catch (error) {
-    console.error("Error tracking product view:", error);
-    res.status(500).json({ error: "Failed to track view" });
-  }
-});
+  })
+);
 
-// GET /api/products/popular - Get popular products based on interactions
-router.get("/popular/list", async (req, res) => {
-  try {
-    const { prisma } = req;
+// GET /api/products/popular/list - Get popular products
+router.get(
+  "/popular/list",
+  asyncHandler(async (req, res) => {
     const { limit = 10 } = req.query;
-
-    // Get products with highest interaction counts
-    const popularProducts = await prisma.product.findMany({
-      where: { isActive: true },
-      include: {
-        _count: {
-          select: {
-            interactions: true,
-            orderItems: true,
-          },
-        },
-      },
-      orderBy: [
-        {
-          interactions: {
-            _count: "desc",
-          },
-        },
-        {
-          orderItems: {
-            _count: "desc",
-          },
-        },
-      ],
-      take: parseInt(limit),
-    });
-
-    const formattedProducts = popularProducts.map((product) => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      category: product.category,
-      brand: product.brand,
-      imageUrl: product.imageUrl,
-      stats: {
-        totalInteractions: product._count.interactions,
-        totalOrders: product._count.orderItems,
-      },
-    }));
-
-    res.json({ products: formattedProducts });
-  } catch (error) {
-    console.error("Error fetching popular products:", error);
-    res.status(500).json({ error: "Failed to fetch popular products" });
-  }
-});
+    const products = await req.services.product.getPopularProducts(limit);
+    res.json({ products });
+  })
+);
 
 // GET /api/products/search/suggestions - Get search suggestions
-router.get("/search/suggestions", async (req, res) => {
-  try {
-    const { prisma } = req;
+router.get(
+  "/search/suggestions",
+  asyncHandler(async (req, res) => {
     const { q } = req.query;
-
     if (!q || q.length < 2) {
       return res.json({ suggestions: [] });
     }
-
-    // Get product name suggestions
-    const products = await prisma.product.findMany({
-      where: {
-        isActive: true,
-        OR: [
-          { name: { contains: q, mode: "insensitive" } },
-          { brand: { contains: q, mode: "insensitive" } },
-          { category: { contains: q, mode: "insensitive" } },
-        ],
-      },
-      select: {
-        name: true,
-        brand: true,
-        category: true,
-      },
-      take: 10,
-    });
-
-    // Create unique suggestions
-    const suggestions = new Set();
-    products.forEach((product) => {
-      if (product.name.toLowerCase().includes(q.toLowerCase())) {
-        suggestions.add(product.name);
-      }
-      if (product.brand.toLowerCase().includes(q.toLowerCase())) {
-        suggestions.add(product.brand);
-      }
-      if (product.category.toLowerCase().includes(q.toLowerCase())) {
-        suggestions.add(product.category);
-      }
-    });
-
-    res.json({
-      suggestions: Array.from(suggestions).slice(0, 8),
-    });
-  } catch (error) {
-    console.error("Error fetching search suggestions:", error);
-    res.status(500).json({ error: "Failed to fetch suggestions" });
-  }
-});
+    const suggestions = await req.services.product.searchProducts(q);
+    res.json({ suggestions });
+  })
+);
 
 module.exports = router;
